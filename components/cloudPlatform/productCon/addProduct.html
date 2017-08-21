@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="index.css">
+<style>
+    .addProductContent{
+        font-size: 14px !important;
+    }
+</style>
+<div class="addProductContent">
+    <p class="addText">创建产品</p>
+    <div class="addProductFrom" style="padding:0 15% 0 0 ">
+        <form id="form">
+            <table>
+                <tr>
+                    <td class="addProductTd">
+                        <span style="right:90px;">*</span><label  for="">产品分类:</label></td>
+                    <td class="addProductTdT"><select name="productType" id="productType" class="BigInput" style="font-size:14px;padding:10px 8px">
+                        <option value="智能家居">智能家居</option>
+                        <option value="智慧医疗">智慧医疗</option>
+                        <option value="可穿戴设备">可穿戴设备</option>
+                        <option value="智慧城市">智慧城市</option>
+                        <option value="工业设备">工业设备</option>
+                        <option value="农林业生态">农林业生态</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <div class="Validform_checktip"></div>
+                </td>
+                </tr>
+                <tr>
+                    <td class="addProductTd">
+                        <span style="right:90px;">*</span><label for="">产品名称:</label>
+                    </td>
+                    <td class="addProductTdT">
+                        <input type="text" id="productName" name="productName" class="BigInput" datatype="*" maxlength="30"
+                        nullmsg="请填写产品名称" placeholder="产品名称" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="addProductTd">
+                        <span style="right:90px;"></span><label for="">产品型号:</label>
+                    </td>
+                    <td class="addProductTdT">
+                        <input type="text" id="productModel" name="productModel" class="BigInput"  maxlength="30"
+                         placeholder="产品型号" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr style="height:50px;">
+                    <td class="addProductTd">
+                        <span style="right:90px;" style="top:12px;">*</span><label for="" style="top:12px;">技术方案:</label>
+                    </td>
+                    <td class="addProductTdT addProductTdTLa">
+                        <label for="technicalSolution1"><input type="radio" id="technicalSolution1" name="technicalSolution" value="wifi" checked="true"/>&nbsp;&nbsp;WIFI</label>
+                        <label for="technicalSolution2" style="width:120px;text-align:center;"><input type="radio" id="technicalSolution2" name="technicalSolution" value="gprs"/>&nbsp;&nbsp;移动网络</label>
+                        <label for="technicalSolution3" style="text-align:right;"><input type="radio" id="technicalSolution3" name="technicalSolution" value="bluetooth"/>&nbsp;&nbsp;蓝牙</label>
+                    </td>
+                </tr>
+                <tr style="height:50px;" class="shuju">
+                    <td class="addProductTd">
+                        <span style="top:12px;">*</span><label for="" style="top:12px;">数据传输方式:</label>
+                    </td>
+                    <td class="addProductTdT addProductTdTLa">
+                        <label for="dataTransType1"><input type="radio" id="dataTransType1" name="dataTransType" value="0" checked="true"/>&nbsp;&nbsp;定长</label>
+                        <label for="dataTransType2" style="width:120px;text-align:center;"><input type="radio" id="dataTransType2" name="dataTransType" value="1"/>&nbsp;&nbsp;变长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label for="" style="text-align:right;"><img src="../../imgs/cloud/help.png" alt="" data-toggle="tooltip" data-placement="bottom"  style="cursor:pointer;float:center;"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="addProductTd">
+                        <label for="">产品描述:</label>
+                    </td>
+                    <td class="addProductTdT">
+                        <textarea  type="area" id="productDesc" name="productDesc" value="" autocomplete="off" style="height:150px;font-size:14px;line-height:30px;" class="BigInput"  maxlength="300" placeholder="产品描述"></textarea >
+                        <p style="float:right;color:#999999;"><span id="spanText">0</span>/300</p>
+                    </td>
+                </tr>
+                <tr style="text-align:center;">
+                    <td colspan="2" style="padding-left:10%;">
+                        <input style="width:100px;background:#2F8BE6;color:#fff;margin:60px 0;padding:0;height:42px;line-height:42px;" type="submit" class="SmallInput"   value="创建产品">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+    <script>
+        $(function(){
+
+            $("input[type=text],select,textarea").focus(function(event) {
+                /* Act on the event */
+                $(this).css("background","#fff")
+            });
+
+            $("input[name=technicalSolution]").click(function(){
+                if($(this).val()=="bluetooth"){
+                    $(".shuju").hide();
+                    $("input[name=dataTransType]").val("");
+                }else{
+                    $(".shuju").show();
+                    $("#dataTransType1").val("0")
+                }
+            });
+
+            $("textarea").bind('input propertychange', function() {
+                $("#spanText").html($(this).val().length);
+            });
+
+            var isflag=false;
+            var input = document.createElement('input');
+            if("placeholder" in input){
+                // alert("支持")
+                isflag=true;
+            }else{
+                // alert("不支持")
+                isflag=false;
+                JPlaceHolder.init();
+            }
+
+            $("#form").Validform({
+                tiptype:function(msg,o,cssctl){
+        			if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                        if(isflag){
+                            var objtip=o.obj.siblings(".Validform_checktip").show();
+                        }else{
+                            var objtip=o.obj.parent().siblings(".Validform_checktip").show();
+                        }
+        				cssctl(objtip,o.type);
+        				objtip.text(msg);
+                        $(".Validform_right").text("")
+        			}
+        		},
+                showAllError:false,
+                ignoreHidden:true,
+                beforeSubmit:function(form){
+                    var param=tools.formToJson($("#form"));
+                    // console.log(param)
+                    // window.location.href="productInfo.html";
+                    param["customerAccount"]=getCookie("customerAccount");
+                    param["customerId"]=getCookie("customerId");
+                    // console.log(param)
+                    getDataTwo(api.saveProduct,param,"post",true,function(json){
+                        // console.log(json)
+                        if(json.rtState){
+                            $("#productSid").val(json.rtData.sid);
+                            $("#productKey").val(json.rtData.productKey);
+                            top.$.jBox.tip(json.rtMsg,"success",{
+                                timeout:500,
+                                closed:function(){
+                                    getCustomerProduct();
+                                    $(".w-center").load("productCon/productInfo.html");
+                                }
+                            })
+                        }else{
+                            top.$.jBox.tip(json.rtMsg,"error",{
+                                timeout:500,
+                                closed:function(){
+                                    if(json.statusCode==911){
+                                        window.location.href="../../components/login/index.html"
+                                    }
+                                }
+                            });
+                        }
+                    })
+                    return false;
+                }
+            });
+
+            $("[data-toggle='tooltip']").tooltip({
+                content: '<span style="color:#fff">"定长"是在数据点上报下发时数据一并上传<br/>"变长"指指只传输改变的数据点</span><br/><span>定长对于开发更方便，<br/>变长则更节省传输资源</span>'
+            });
+
+        });
+    </script>

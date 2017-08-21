@@ -1,0 +1,104 @@
+<body onload="onload()">
+    <div class="w-top">
+        <div style="left:0;">
+            <dl style="">
+                <dt><img src="../../imgs/cloud/1.png" alt=""></dt>
+                <dd>创建产品</dd>
+            </dl>
+            <img style="" class="bigarrows"  src="../../imgs/cloud/bigarrows.png"/>
+        </div>
+        <div style="left:22%;">
+            <dl style="">
+                <dt><img src="../../imgs/cloud/2.png" alt=""></dt>
+                <dd>创建数据点</dd>
+            </dl>
+            <img style="" class="bigarrows"  src="../../imgs/cloud/bigarrows.png"/>
+        </div>
+        <div style="left:42%;">
+            <dl style="">
+                <dt><img src="../../imgs/cloud/3.png" alt=""></dt>
+                <dd>MCU/应用开发</dd>
+            </dl>
+            <img style="" class="bigarrows"  src="../../imgs/cloud/bigarrows.png"/>
+        </div>
+        <div style="left:64%;">
+            <dl style="">
+                <dt><img src="../../imgs/cloud/4.png" alt=""></dt>
+                <dd>产品调试</dd>
+            </dl>
+            <img style="" class="bigarrows"  src="../../imgs/cloud/bigarrows.png"/>
+        </div>
+        <div style="right:0;width:15%;">
+            <dl style="">
+                <dt><img src="../../imgs/cloud/5.png" alt=""></dt>
+                <dd>产品发布</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="w-step">
+        <p class="step_frist">创建产品</p>
+        <p class="step_two">开启物联网应用之旅之前您需要先创建一款产品。通过创建产品来确定产品的技术方案。<button class="product_button" onclick="createProduct()">创建产品</button></p>
+    </div>
+    <div class="w-step">
+        <p class="step_frist">创建数据点</p>
+        <p class="step_two step_two1 step_two2 step_two5" style="line-height:50px;">一个数据点就是设备的一个功能参数。例如在一款空气净化器产品中，有开关、空气质量、风速等功能参数，就可以在数据点中进行定义。 创建数据点后，设备与智云服的通讯格式即可确定,可在数据点页面可以 添加数据点。</p>
+    </div>
+    <div class="w-step">
+        <p class="step_frist">MCU/应用开发</p>
+        <p class="step_two">创建一款应用，生成AppiD和AppSecret。在App开发中填入。应用开发页面可以添加应用。</p>
+    </div>
+    <div class="w-step">
+        <p class="step_frist">产品调试</p>
+        <p class="step_two step_two1">通过您开发的App或者下载Demo App调试您的设备。如果您的设备还没有开发好，可以通过虚拟设备来调试App和设备，以及设备和云端的数据通讯。在虚拟设备页面可以启动虚拟设备。</p>
+    </div>
+    <div class="w-step">
+        <p class="step_frist">发布产品</p>
+        <p class="step_two " >经过产品批量测试之后，建议您发布产品，智云服会对您的产品进行审核，审核通过之后，会获得更多的增值服务。产品信息页面可以发布产品。</p>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        var width = $(window).width();
+        // console.log(width)
+        if(width<=1550){
+            $(".step_two1").css("line-height","30px");
+            // $(".step_two3").css("line-height","30px");
+            $(".w-top").css("width","100%");
+            $(".w-center>.w-top>div>img").css("right","5%")
+        }else{
+            $(".step_two1 step_two3").css("line-height","50px");
+            $(".step_two2").css("line-height","30px");
+            $(".w-top").css("width","80%");
+            $(".w-center>.w-top>div>img").css("right","10%")
+        }
+        if(width<=1800){
+            $(".step_two5").css("line-height","30px")
+        }else{
+            $(".step_two5").css("line-height","50px")
+        }
+        $(window).resize(function(){
+            var width = $(window).width();
+            if(width<=1550){
+                $(".step_two1").css("line-height","30px");
+                // $(".step_two3").css("line-height","30px");
+                $(".w-top").css("width","100%");
+                $(".w-center>.w-top>div>img").css("right","5%")
+            }else{
+                $(".step_two1").css("line-height","50px");
+                $(".step_two2").css("line-height","30px");
+                $(".w-top").css("width","80%");
+                $(".w-center>.w-top>div>img").css("right","10%")
+            }
+        });
+    })
+
+    function createProduct(){
+        var timestamp=new Date().getTime();
+        $(".w-center").load("productCon/addProduct.html"+"?"+timestamp,function(){
+            $(".wEast_ul_liApplica").removeClass('isActiveLi').children('img').attr("src","../../imgs/cloud/yingyong.png");
+            $(".wEast_ul_liHome").removeClass('isActiveLi').children('img.imgg').attr("src","../../imgs/cloud/homeHui.png");
+            $(".wEast_ul_liProduct").addClass('isActiveLi').children('img.imgg').attr("src","../../imgs/cloud/productBai.png");
+        });
+        $(document).scrollTop(0);
+    }
+</script>

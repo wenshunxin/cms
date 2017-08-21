@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>智云服-文档中心</title>
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <style>
+        .y-documentC-listOne {
+            display: block;
+            height: 45px;
+            line-height: 45px;
+            color: #333;
+            text-decoration: none;
+            padding-left: 50px;
+        }
+
+        .y-documentC-listOne:hover {
+            background: #e2e2e2;
+        }
+
+        .y-documentC-listTwo {
+            padding-left: 65px;
+        }
+
+        .y-documentC-accessProcess li {
+            font-size: 16px;
+            line-height: 32px;
+        }
+
+        .y-documentC-accessProcess li:before {
+            content: "●";
+            color: #61A9EF;
+            margin-right: 10px;
+        }
+
+        .y-documentC-active {
+            background: #2F8BE6 !important;
+            color: #fff;
+        }
+
+        .maodian {
+            border-top: 60px solid #fff;
+            margin-top: -60px;
+            /*position: relative;
+            top: 86px;*/
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="./index.css"> -->
+    <link rel="stylesheet" href="../fromBeginningToEnd/fromBeginningToEnd.css">
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+    <script src="../../resource/jquery/jquery-1.8.3.js"></script>
+    <script src="../../resource/cookie/cookie.js"></script>
+    <script src="../../resource/js/getHeaderAndBottom.js"></script>
+    <script src="../../resource/js/api.js"></script>
+</head>
+
+<body style="background: #f3f3f3;">
+    <!-- header -->
+    <div class="y-documentH"></div>
+    <!-- main -->
+    <div style="margin: 0 auto;width: 1200px;overflow: hidden;">
+        <div style="width: 270px;position: fixed;margin-right: 30px;height: 604px;background: #fff;padding-top: 50px;top: 60px;z-index: 10;">
+            <ul>
+                <li>
+                    <a href="#y-documentC-platformProfile" style="" class="y-documentC-listOne y-documentC-platformProfile1">平台简介</a>
+                </li>
+                <li>
+                    <a href="#y-documentC-quickGetStart" style="" class="y-documentC-listOne y-documentC-quickGetStart1">快速入门</a>
+                    <ul>
+                        <li>
+                            <a href="#y-documentC-nounInterpretation" style="" class="y-documentC-listOne y-documentC-listTwo">名词解释</a>
+                        </li>
+                        <li>
+                            <a href="#y-documentC-accessProcess" style="" class="y-documentC-listOne y-documentC-listTwo">接入流程</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#y-documentC-developmentDocument" style="" class="y-documentC-listOne y-documentC-developmentDocument1">开发文档</a>
+                    <ul>
+                        <li>
+                            <a href="" style="" class="y-documentC-listOne y-documentC-listTwo">App SDK介绍</a>
+                        </li>
+                        <li>
+                            <a href="" style="" class="y-documentC-listOne y-documentC-listTwo">设备SDK介绍</a>
+                        </li>
+                        <li>
+                            <a href="" style="" class="y-documentC-listOne y-documentC-listTwo">Web API介绍</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div style="margin: 0 auto;width: 1200px;overflow: hidden;position: relative;border-top: 60px solid;">
+        <div style="width: 900px;float: right;padding: 20px 45px;background: #fff;" class="y-documentC-main">
+            <!-- 平台简介 -->
+            <div id="y-documentC-platformProfile" class="maodian bor" >
+                <p style="font-size: 28px;line-height: 66px;color: #333;"><strong>平台简介</strong></p>
+                <p style="font-size:16px;color: #333;line-height: 32px;text-indent: 32px;">智云服是由北京天创科技公司经过多年行业经验的积累和创新，推出面向创客企业、生产厂商、个人/企业开发者的物联网云服务平台，平台自主研发物联网接入模块和板卡，为有开发经验的用户提供自助开发工具和云端服务，为没有开发经验的用户提供一条龙定制化开发服务，实现产品或应用智能化。</p>
+                <p style="font-size:16px;color: #333;line-height: 32px;text-indent: 32px;">智云服提供云端、设备端、用户端的全生命周期管理平台，开放的API接口、完善的SDK、APP Demo及完整的虚拟设备调试流程，真正帮助企业和个人快速建立各种物联网产品应用，降低技术门槛和研发成本，大大缩减技术开发的工作量，提升产品投产速度和竞争力，最终为用户创造更高的价值。</p>
+            </div>
+            <!-- 快速入门 -->
+            <div id="y-documentC-quickGetStart" class="maodian">
+                <p style="font-size: 28px;line-height: 66px;color: #333;"><strong>快速入门</strong></p>
+                <!-- 名词解释 -->
+                <p style="font-size: 22px;line-height: 60px;color: #333;" id="y-documentC-nounInterpretation" class="maodian">名词解释</p>
+                <p style="font-size:16px;color: #333;line-height: 32px;"><strong>Product Key</strong>:产品标识码，开发者通过智云服后台创建新产品后，自动生成的一个32位字符串。在机智云的数据库中是一个唯一的号码，开发者将ProductKey写入设备主控MCU后，智云服通过此标识码对设备进行识别并自动完成注册。 </p>
+                <!-- 接入流程 -->
+                <p style="font-size: 22px;line-height: 60px;color: #333;" id="y-documentC-accessProcess" class="maodian">接入流程</p>
+                <div style="text-indent: 16px;line-height: 66px;">
+                    <strong>注册开发者</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>创建产品</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>创建数据点</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>设备/应用开发</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>产品调试</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>申请发布</strong>
+                    <b style="color: #2F8BE6;">&#10152</b>
+                    <strong>正式量产</strong>
+                </div>
+                <p style="line-height: 48px;font-size: 18px;">1.注册开发者</p>
+                <p style="font-size: 16px;line-height: 32px;">在使用智云服开发服务前，您需要先注册智云服开发者账号。根据页面要求，填写注册信息，注册成功后完善用户信息，可享受更多开发者服务功能。</p>
+                <p style="line-height: 48px;font-size: 18px;">2.创建产品</p>
+                <p style="font-size: 16px;line-height: 32px;">在开发者中心左侧栏目点击“创建产品”，在创建产品页面选择产品分类，输入产品名称、产品型号，选择设备接入方案、数据传输方式，产品描述等信息完成产品的创建。如下图：</p>
+                <img src="1.png" alt="" style="width: 100%;display: block;">
+                <ul class="y-documentC-accessProcess">
+                    <li>产品分类：产品的行业分类，默认为智能家居</li>
+                    <li>产品名称：对产品自定义命名</li>
+                    <li>产品型号：产品型号定义</li>
+                    <li>设备接入方案：智云服目前支持wifi、移动网络、蓝牙等接入方式，后续会根据用户实际需求扩展更多</li>
+                    <li>数据传输方式：“定长”指在数据点上报下发时数据一并上传，“变长”指传输改变的数据点（定长对于开发来说更方便，变长则更节省传输资源）</li>
+                    <li>产品描述：产品的简单描述</li>
+                </ul>
+                <p style="line-height: 48px;font-size: 18px;">3.创建数据点</p>
+                <ul class="y-documentC-accessProcess">
+                    <li>根据产品对应需求创建数据点：依次填写显示名称、标识名、读写类型、数据类型、分辨率、单位、范围、备注等信息完成数据点的创建。</li>
+                    <li>显示名称：即自定义功能点的名称</li>
+                    <li>标识名：用于应用层的传输，客户端或业务云开发时需要使用。命名规则遵循标准的开发语言变量名命名规范，支持英文字母、数字和下划线，以英文字母开头。</li>
+                    <li>读写类型
+                        <p style="text-indent: 26px;">只读：该数据点非控制，仅用于设备状态信息的查询或上报</p>
+                        <p style="text-indent: 26px;">可读：该数据点可控制，设备端可上报该数据点数据，云端/客户端可对该数据点进行下发控制</p>
+                        <p style="text-indent: 26px;"> 报警：该数据点非控制，当设备发生制定的状态改变或达到制定值时，上报报警信号</p>
+                        <p style="text-indent: 26px;">故障：该数据点非控制，当设备发生制定的状态改变或达到指定值时，上报故障信息</p>
+                    </li>
+                    <li>数据类型：适用于可线性调节类型数据库
+                        <p style="text-indent: 26px;">布尔型：表示两个状态：0或1，例如：值为正确或错误</p>
+                        <p style="text-indent: 26px;"> 枚举型：自定义的有限取值集合，定义某个功能有固定的若干个值</p>
+                        <p style="text-indent: 26px;"> 扩展性：二进制字符，可用于自定义数据类型或接入扩展元器件</p>
+                        <p style="text-indent: 26px;">分辨率：分辨率数值</p>
+                        <p style="text-indent: 26px;"> 单位：该功能的单位，例如：温度的单位可以设置为“摄氏度”</p>
+                        <p style="text-indent: 26px;">范围：自定义范围，数字是8位数 </p>
+                        <p style="text-indent: 26px;"> 备注：更好的描述该功能。方便团队开发</p>
+                    </li>
+                </ul>
+                <p style="line-height: 48px;font-size: 18px;">4.设备/应用开发</p>
+                <p style="line-height: 32px;font-size: 16px;">当开发者创建好产品后，可参考智云服接口说明文档中心相关文档进行智能产品开发</p>
+                <p style="line-height: 48px;font-size: 18px;">设备开发 </p>
+                <p style="line-height: 32px;font-size: 16px;">开发人员只需在正在开发的智能硬件上嵌入写好智云服连接协议的联网模块，即可通过智云服平台实现设备连网及智能化，连网模块包括WIFI、GPRS、移动网络等主流连网方式。</p>
+                <p style="line-height: 48px;font-size: 18px;">应用开发</p>
+                <p style="line-height: 32px;font-size: 16px;">开发人员只需在正在开发的手机App内集成智云服提供的App SDK，就可以连接智云服平台实现APP通过云端控制智能设备</p>
+                <p style="line-height: 48px;font-size: 18px;">5.调试产品</p>
+                <p style="line-height: 32px;font-size: 16px;">在调试产品过程中，开发调试的设备将连接智云服测试服务器，该服务器为开发者提供了完整的测试环境，以及智云服部分开放功能，待产品开发完成后需要申请发布时会将开发的产品重新部署到正式生产环境服务器上。</p>
+                <p style="line-height: 48px;font-size: 18px;">6.申请发布</p>
+                <p style="line-height: 32px;font-size: 16px;">当开发者的设备完成全部开发后需要进行产品发布，发布的产品将部署在智云服正式生产环境服务器上，同时为用户的设备分配独立的云端运行环境，确保设备24小时不间断在线以供用户使用。同时产品正式发布后，将享受更多智云服供的免费增值服务，包括：智能设备统计分析，开放平台展示以及各种无微不至的技术支持服务。</p>
+                <p style="line-height: 48px;font-size: 18px;">7.正式量产</p>
+                <p style="line-height: 32px;font-size: 16px;">产品发布后，厂家与智云服签署协议即可正式量产产品接入智云服，量产的产品会有智云服技术人员24小时监控，确保产品稳定运行。</p>
+                <p style="line-height: 48px;font-size: 18px;"><strong>虚拟设备和调试App</strong></p>
+                <p style="line-height: 32px;font-size: 16px;">虚拟设备是智云服云端可自动生成的一个仿真智能硬件，可以模拟要开发或正在开发的智能硬件，来进行云端设备控制、手机APP控制、上报数据等需求。</p>
+                <p style="line-height: 32px;font-size: 16px;">当正式的智能硬件产品产品还未完全开发完成，就可以使用该“虚拟设备”与正式产品的控制APP进行调试和验证；当正式产品的控制APP还未完全开发好，就可以使用该“调试APP”对正式产品进行调试和验证，简单且方便，从而有效的加快研发周期，降低研发成本。</p>
+                <p style="line-height: 32px;font-size: 16px;">按照实际智能硬件产品的需求自定义功能，自动生成可响应的控制页面，有完整的用户注册、登陆和注销流程，可以完成智能硬件的入网配置、设备搜索、设备绑定、设备登录、设备控制、远程控制、状态更新、本地远程切换等基本操作和调试需求。</p>
+                <p style="line-height: 32px;font-size: 16px;">具体操作步骤如下：</p>
+                <ul class="y-documentC-accessProcess">
+                    <li>1.安装智云服调试APP
+                        <p style="text-indent: 26px;"><a href="javascript:void(0);">点击这里下载并安装机智云调试APP</a></p>
+                    </li>
+                    <li>2.启动虚拟设备
+                        <p style="text-indent: 26px;">进入开发者中心，在左侧栏选择虚拟设备，可看到虚拟设备使用指导、上报数据、消息log三个功能区域</p>
+                        <p style="text-indent: 26px;">虚拟设备使用指导：显示二维码，用于智云服调试APP绑定虚拟设备</p>
+                        <p style="text-indent: 26px;">上报数据：用于通过开发者中心的虚拟设备上报数据</p>
+                        <p style="text-indent: 26px;">消息log：用于显示接受APP发送的数据和虚拟设备上报数据</p>
+                    </li>
+                    <li>3.使用智云服调试APP绑定虚拟设备<br>
+                        <p style="text-indent: 26px;">智云服调试APP绑定虚拟设备流程：虚拟设备二维码--打开APP扫码界面--扫码绑定虚拟设备</p>
+                        <p style="text-indent: 26px;">3.1 扫描虚拟设备使用指导的虚拟设备二维码</p>
+                        <p style="text-indent: 26px;">3.2 手机登陆智云服调试APP并绑定</p>
+                        <p style="text-indent: 26px;">3.3 调试APP控制虚拟设备，进入调试页面，开始调试</p>
+                    </li>
+                    <li>4.虚拟设备上报数据到智云服调试APP，同时云端虚拟设备后台的最新日志会显示虚拟设备上报数据，并自动打印通信日志，智云服调试APP接收到虚拟设备推送的数据后，自动更新UI</li>
+                </ul>
+            </div>
+            <!-- 开发文档 -->
+            <div id="y-documentC-developmentDocument" class="maodian">
+                <p style="font-size: 28px;line-height: 66px;color: #333;"><strong>开发文档</strong></p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">App SDK介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">功能介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">使用流程</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">设备SDK介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">功能介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">使用流程</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">Web API介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">功能介绍</p>
+                <p style="font-size: 22px;line-height: 60px;color: #333;" class="maodian">使用流程</p>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;line-height: 60px;margin-top: 100px;cursor: pointer;color: #666;font-size: 14px;"><span onclick="goIndex()" style="margin-right: 20px;">智云服首页</span> | <span onclick="goDocumentC()" style="margin-left: 20px;">文档中心</span></div>
+    <script>
+        $(function() {
+            // 判断是否为ie(包括ie11)
+            if (!!window.ActiveXObject || "ActiveXObject" in window){
+                $(".bor").css({
+                    "border-top": "120px solid #fff"
+                })
+            }
+            if (getParm().url * 1 == 1) {
+                window.location = ips + "/components/documentCenter/index.html?url=" + getParm().url + "#y-documentC-quickGetStart";
+                $(".y-documentC-listOne").removeClass("y-documentC-active");
+                $(".y-documentC-quickGetStart1").addClass("y-documentC-active")
+            } else if (getParm().url * 1 == 2) {
+                window.location = ips + "/components/documentCenter/index.html?url=" + getParm().url + "#y-documentC-developmentDocument";
+                $(".y-documentC-listOne").removeClass("y-documentC-active");
+                $(".y-documentC-developmentDocument1").addClass("y-documentC-active")
+            } else if (getParm().url * 1 == 0) {
+                window.location = ips + "/components/documentCenter/index.html?url=" + getParm().url + "#y-documentC-platformProfile";
+                $(".y-documentC-listOne").removeClass("y-documentC-active");
+                $(".y-documentC-platformProfile1").addClass("y-documentC-active")
+            }
+        })
+        $(".y-documentC-listOne").each(function() {
+            $(this).on("click", function() {
+                $(".y-documentC-listOne").removeClass("y-documentC-active");
+                $(this).addClass("y-documentC-active");
+            })
+        })
+    </script>
+</body>
+
+</html>

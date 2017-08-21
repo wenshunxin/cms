@@ -1,0 +1,351 @@
+<style>
+  table td,
+  table th {
+    text-align: center;
+  }
+
+  table th {
+    line-height: 44px;
+    background: #f0f0f0;
+    color: #333;
+    font-size: 14px;
+  }
+
+  table td {
+    line-height: 34px;
+    color: #666;
+    font-size: 14px;
+  }
+</style>
+<div class="y-virtualDev-main" style="width: 100%;border: 1px solid #efefef;border-radius: 4px;overflow: hidden;margin: 20px 0;">
+  <div style="line-height: 50px;background: #f0f0f0;padding-left: 20px;font-size: 16px;">
+    <strong>设备列表</strong>
+  </div>
+  <!-- 搜索 -->
+  <div style="height: 68px;padding: 17px 22px;overflow: hidden;">
+    <div style="float: left;">
+      <span>显示</span>
+      <select name="" id="equipmentStatus" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 128px;">
+                            <option value="全部">全部</option>
+                            <option value="在线">在线</option>
+                            <option value="离线">离线</option>
+                        </select>
+    </div>
+    <div style="float: right;position: relative;width: 340px;">
+      <input type="text" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 306px;border-right: 0;outline: none;" id="addressVal">
+      <img src="deviceList/ss.png" alt="" style="position: absolute;width: 34px;height: 34px;right: 0;top: 0;padding: 6px;border: 1px solid #efefef;border-left: 0;" onclick="sousou()">
+    </div>
+    <div style="float: right;">
+      <select name="" id="address" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 128px;">
+                            <!-- <option value="MAC">MAC</option> -->
+                            <option value="设备ID">设备ID</option>
+                            <option value="用户手机">用户手机</option>
+                        </select>
+    </div>
+  </div>
+  <!-- 表格 -->
+  <div style="width: 100%;padding: 0 12px;">
+    <table style="width: 100%;">
+      <thead>
+        <tr>
+          <th>设备ID</th>
+          <th>设备MAC</th>
+          <th>用户手机</th>
+          <th>激活时间</th>
+          <th>最近上线时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody class="tbodys">
+      </tbody>
+    </table>
+    <div class="text-center" style="text-align: right;margin: 40px 0 20px 0;">
+      <ul id="pagination" class="pagination"></ul>
+    </div>
+    <div style="height: 0;clear: both;"></div>
+  </div>
+</div>
+<!-- </div>
+    </div> -->
+<!-- 解绑弹窗 -->
+<div class="jieback" style="position: fixed;width: 100%;height: 100%;left: 0;top: 0;z-index: 3;display: none;">
+</div>
+<div class="jieb" style="position: fixed;top: 50%;left: 50%;width: 400px;height: 235px;box-shadow: 0 0 20px #efefef;margin-left: -200px;margin-top: -117.5px;z-index: 999;background: #fff;padding: 84px 60px 0;border-radius: 4px;display: none;">
+  <p style="text-align: center;font-size:18px;height: 18px;line-height: 18px;margin-bottom: 60px;">确定要解绑？</p>
+  <div style="overflow: hidden">
+    <button style="float: left;width: 100px;height:40px;background: #B5B5B5;color: #fff;border: 0;border-radius: 4px;" onclick="hides()">取消</button>
+    <button style="float: right;width: 100px;height:40px;background: #2F8BE6;color: #fff;border: 0;border-radius: 4px;" class="jiebY">确定</button>
+  </div>
+</div>
+<script src="./jquery.twbsPagination.js"></script>
+<script>
+  $(function() {
+    getDataTwo(api.getProductBySid,{
+      "sid": $("#productSid").val()
+    },"post",true,function(data){
+      // console.log(data);
+      if(data.rtState) {
+        if(data.rtData) {
+          var technicalSolution = "";
+          if(data.rtData.technicalSolution == "wifi") {
+            technicalSolution = "<option value='MAC' selected>MAC</option>";
+          }else {
+            technicalSolution = "<option value='IMEI' selected>IMEI</option>";
+          }
+          $("#address").prepend(technicalSolution);
+        }
+      }
+    })
+    // 设备列表
+    deviceList();
+  })
+  // $("#custPid").val()
+
+
+  // 设备列表
+  function deviceList() {
+    getDataTwo(api.getEquipmentInfoList, {
+      "custPid": $("#custPid").val(),
+      "pageSize": 15,
+      "pageNum": 1
+    }, "post", true, function(data) {
+      // console.log(data);
+      if (data.rows && data.rows.length) {
+        pages(data)
+        var visiblePages = 5;
+        var total = 1;
+        if (data.total / 15 < 5) {
+          if (data.total % 15 > 0) {
+            total = data.total / 15 + 1;
+            visiblePages = data.total / 15 + 1;
+          } else {
+            total = data.total / 15;
+            visiblePages = data.total / 15;
+          }
+        }
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $('#pagination').twbsPagination({
+          totalPages: total,
+          visiblePages: visiblePages
+        }).on('page', function(event, page) {
+          // console.log(page);
+          getDataTwo(api.getEquipmentInfoList, {
+            "custPid": $("#custPid").val(),
+            "pageSize": 15,
+            "pageNum": page
+          }, "post", true, function(data) {
+            // console.log(data)
+            pages(data);
+          })
+        })
+      } else {
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $(".tbodys").html("<tr><td colspan='7' style='width: 100%'>暂无设备</td></tr>");
+      }
+    });
+  }
+  // 设备状态搜索
+  $("#equipmentStatus").on("change", function() {
+    // console.log($("#equipmentStatus").val())
+    getDataTwo(api.getEquipmentInfoList, {
+      "custPid": $("#custPid").val(),
+      "equipmentStatus": $("#equipmentStatus").val(),
+      "pageSize": 15,
+      "pageNum": 1,
+    }, "post", true, function(data) {
+      // console.log(data);
+      if (data.rows && data.rows.length) {
+        pages(data);
+        var visiblePages = 5;
+        var total = 1;
+        if (data.total / 15 < 5) {
+          if (data.total % 15 > 0) {
+            total = data.total / 15 + 1;
+            visiblePages = data.total / 15 + 1;
+          } else {
+            total = data.total / 15;
+            visiblePages = data.total / 15;
+          }
+        }
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $('#pagination').twbsPagination({
+          totalPages: total,
+          visiblePages: visiblePages
+        }).on('page', function(event, page) {
+          // console.log(page);
+          getDataTwo(api.getEquipmentInfoList, {
+            "custPid": $("#custPid").val(),
+            "pageSize": 15,
+            "pageNum": page,
+            "equipmentStatus": $("#equipmentStatus").val()
+          }, "post", true, function(data) {
+            // console.log(data)
+            pages(data);
+          })
+        })
+      } else {
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $(".tbodys").html("<tr><td colspan='7' style='width: 100%'>暂无设备</td></tr>");
+      }
+    });
+  });
+  // 设备搜索
+  function sousou() {
+    getDataTwo(api.getEquipmentInfoList, {
+      "custPid": $("#custPid").val(),
+      "equipmentStatus": $("#equipmentStatus").val(),
+      "address": $("#address").val(),
+      "addressVal": $("#addressVal").val(),
+      "pageSize": 15,
+      "pageNum": 1,
+    }, "post", true, function(data) {
+      // console.log(data)
+      if (data.rows && data.rows.length) {
+        pages(data);
+        var visiblePages = 5;
+        var total = 1;
+        if (data.total / 15 < 5) {
+          if (data.total % 15 > 0) {
+            total = data.total / 15 + 1;
+            visiblePages = data.total / 15 + 1;
+          } else {
+            total = data.total / 15;
+            visiblePages = data.total / 15;
+          }
+        }
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $('#pagination').twbsPagination({
+          totalPages: total,
+          visiblePages: visiblePages
+        }).on('page', function(event, page) {
+          // console.log(page);
+          getDataTwo(api.getEquipmentInfoList, {
+            "custPid": $("#custPid").val(),
+            "pageSize": 15,
+            "pageNum": page,
+            "equipmentStatus": $("#equipmentStatus").val(),
+            "address": $("#address").val(),
+            "addressVal": $("#addressVal").val()
+          }, "post", true, function(data) {
+            // console.log(data)
+            pages(data);
+          })
+        })
+      } else {
+        $('#pagination').empty();
+        $('#pagination').removeData("twbs-pagination");
+        $('#pagination').unbind("page");
+        $(".tbodys").html("<tr><td colspan='7' style='width: 100%'>暂无设备</td></tr>");
+      }
+    });
+  };
+
+  function pages(data) {
+    var tr = "";
+    $.each(data.rows, function(k, v) {
+      // console.log(v);
+      var userPhone = "";
+      var bindStatus = "";
+      if (v.customerUser) {
+        userPhone = v.customerUser.userPhone
+      } else {
+        userPhone = ""
+      }
+      if (v.bindStatus == "已绑定") {
+        bindStatus = "color: #2F8BE6;";
+        userPhone = userPhone;
+      } else if (v.bindStatus == "未绑定") {
+        bindStatus = "color: #666;";
+        userPhone = "未绑定";
+      }
+      if (v.macAddress) {
+        v.macAddress = v.macAddress;
+      } else {
+        v.macAddress = "--";
+      }
+      tr += "<tr>" +
+        "<td>" + v.custDeviceId + "</td>" +
+        "<td>" + v.macAddress + "</td>" +
+        "<td>" + userPhone + "</td>" +
+        "<td>" + zhrq(v.bindTime) + "</td>" +
+        "<td>" + zhrq(v.updateTime) + "</td>" +
+        "<td>" + v.equipmentStatus + "</td>" +
+        "<td>" +
+        "<div>" +
+        "<a href='javascript:void(0);' style='color: #2F8BE6;text-decoration: none;margin-right: 10px;'  onclick='seeInfo(\"" + v.sid + "\",\"" + v.custDeviceId + "\",\"" + userPhone + "\")'>查看</a>" +
+        "<a href='javascript:void(0);' style='text-decoration: none;" + bindStatus + "' onclick='jieb(" + v.sid + ", \"" + v.bindStatus + "\")'>解绑</a>" +
+        "</div>" +
+        "</td>" +
+        "</tr>";
+    });
+    $(".tbodys").html(tr);
+    $(".tbodys>tr").on("mouseover", function () {
+      $(this).css("background", "#f0f0f0");
+    }).on("mouseout", function () {
+      $(this).css("background", "#fff");
+    });
+    $(".w-content").outerHeight($(".w-center").outerHeight() + "px");
+  }
+
+  function updateEquipmentInfo(sid) {
+    // 设备解绑
+    getDataTwo(api.updateEquipmentInfo, {
+      "sid": sid
+    }, "", true, function(data) {
+      // console.log(data);
+      if (data.rtState) {
+        if (data.rtData == 1) {
+          deviceList();
+          $(".jieb").hide();
+          $(".jieback").hide();
+          top.$.jBox.tip("解绑成功", "error", {
+            timeout: 1000
+          });
+        }
+      }
+    })
+  }
+
+  function seeInfo(sid, deviceId, userPhone) {
+    $("#sid").val(sid);
+    $("#deviceId").val(deviceId);
+    $("#userPhone").val(userPhone);
+    $(".w-center").load("deviceList/info.html")
+  };
+  $(".jieback").on("click", function() {
+    $(this).hide();
+    $(".jieb").hide();
+  })
+
+  function hides() {
+    $(".jieb").hide();
+    $(".jieback").hide();
+  };
+
+  function jieb(sid, bindStatus) {
+    if (bindStatus == "已绑定") {
+      $(".jieback").show();
+      $(".jieb").show();
+      $(".jiebY").on("click", function() {
+        updateEquipmentInfo(sid);
+      })
+      return false;
+    } else if (bindStatus == "未绑定") {
+      return false;
+    }
+  };
+</script>
+</body>
+
+</html>

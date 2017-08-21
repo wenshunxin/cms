@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../../imgs/logo.ico">
+<link rel="stylesheet" href="../../css/reset.css"/>
+<script type="text/javascript" src="../../resource/jquery/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../resource/jquery/jQuery.XDomainRequest.js"></script>
+<script type="text/javascript">
+	function tip(){
+		var search = window.location.search;
+		search = search.substring(1,search.length);
+		// console.log(search)
+		if(search){
+			document.getElementById("tips").innerHTML = "修改成功！";
+				parent.document.getElementById("upload").style.display="block";
+			setTimeout(function(){
+				parent.document.getElementById("upload").style.display="none";
+			},2000);
+		}else{
+			document.getElementById("tips").innerHTML = "修改失败！";
+			$("#tips").css("background","url('../../../resource/jBox/Skins/Blue/images/error.png') no-repeat 10px 10px ");
+			setTimeout(function(){
+				parent.document.getElementById("upload").style.display="none";
+			},2000);
+		}
+	}
+</script>
+<style>
+	body{
+		width:100%;
+		hieght:100%;
+		overflow: hidden;
+	}
+	#tips{
+		height:50px;line-height: 50px;
+		border:1px solid #999;
+		color:#333;
+		width:200px;
+		border-radius: 5px;
+		padding-left:45px;
+		background:url("../../resource/jBox/Skins/Blue/images/success.png") no-repeat 10px 10px #fff;
+	}
+</style>
+</head>
+<body onload="tip();">
+	<div id="tips">
+
+	</div>
+</body>
+</html>

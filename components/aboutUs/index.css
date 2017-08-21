@@ -1,0 +1,204 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "Microsoft yahei";
+    font-family: "微软雅黑";
+}
+
+html, body {
+    width: 100%;
+    /*overflow-x: hidden;*/
+    overflow-y: auto;
+    min-width: 1200px;
+    color: #fff;
+}
+.y-aboutUs-main{
+    margin-top: 60px;
+}
+.y-aboutUs-banner{
+    width: 100%;
+    position: relative;
+    margin-bottom: 100px;
+}
+.y-aboutUs-banner>img{
+    width: 100%;
+    height: 494px;
+    display: block;
+}
+.y-aboutUs-banner>div{
+    width: 1200px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    margin-left: -600px;
+    padding-top: 130px;
+}
+.y-aboutUs-banner>div>div{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.y-aboutUs-banner>div>p{
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+}
+.y-aboutUs-user{
+    width: 1200px;
+    min-width: 1200px;
+    margin: 0 auto;
+}
+.y-aboutUs-enterpriseUser{
+    overflow: hidden;
+    height: 320px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 100px;
+}
+.y-aboutUs-enterpriseUser-img{
+    width: 507px;
+    height: 218px;
+    float: left;
+    background: #000;
+}
+.y-aboutUs-enterpriseUser-info{
+    float: right;
+    width: 50%;
+}
+.y-aboutUs-enterpriseUser-info>p{
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 35px;
+}
+.y-aboutUs-enterpriseUser-info>ul>li{
+    color: #333;
+    font-size: 14px;
+    line-height: 28px;
+}
+.y-aboutUs-enterpriseUser-info>ul>li:before,.y-aboutUs-individualUser-info>ul>li:before{
+    color: #2f8be6;
+    content: "●";
+    margin-right: 14px;
+}
+.y-aboutUs-individualUser{
+    overflow: hidden;
+    height: 320px;
+}
+.y-aboutUs-individualUser-img{
+    width: 507px;
+    height: 218px;
+    float: right;
+    background: #000;
+}
+.y-aboutUs-individualUser-info{
+    float: left;
+    width: 50%;
+}
+.y-aboutUs-individualUser-info>p{
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 35px;
+}
+.y-aboutUs-individualUser-info>ul>li{
+    color: #333;
+    font-size: 14px;
+    line-height: 28px;
+}
+.y-aboutUs-map{
+    width: 100%;
+    background: #f1f1f1;
+    height: 400px;
+}
+.y-aboutUs-map>div{
+    width: 1200px;
+    padding: 56px 0 28px 0;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.y-aboutUs-me{
+    float: left;
+    padding: 0 20px;
+    width: 50%;
+    overflow: hidden;
+}
+.y-aboutUs-me>div{
+    width: 100%;
+}
+.y-aboutUs-me>div>div{
+    float: left;
+    color: #333;
+    margin-right: 10%;
+}
+.y-aboutUs-me>div>div>p{
+    margin-bottom: 20px;
+}
+.y-aboutUs-me>div>div>div{
+    position: relative;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+.y-aboutUs-me>div>div>div>img{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    margin: 0 auto;
+    width: 22px;
+    height: 22px;
+}
+.fadeInRight1{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+}
+.fadeInRight2{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: .5s;
+            animation-delay: .5s;
+}
+.fadeInRight3{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: 1s;
+            animation-delay: 1s;
+}
+.fadeInRight4{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: 1.5s;
+            animation-delay: 1.5s;
+}
+.fadeInRight5{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+}
+.fadeInRight6{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: .5s;
+            animation-delay: .5s;
+}
+.fadeInRight7{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: 1s;
+            animation-delay: 1s;
+}
+.fadeInRight8{
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-delay: 1.5s;
+            animation-delay: 1.5s;
+}
+#map{
+    float: right;
+    width: 556px;
+    height: 316px;
+}

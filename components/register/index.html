@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <title>智云服</title>
+    <link rel="stylesheet" href="../../css/reset.css"/>
+    <link rel="stylesheet" href="../../css/common.css"/>
+    <link rel="stylesheet" href="../../resource/validform/style.css"/>
+    <link rel="stylesheet" href="../../resource/jBox/Skins/Blue/jbox.css"/>
+    <link rel="stylesheet" href="register.css"/>
+    <style>
+
+    </style>
+</head>
+<body style="background:#F2F2F2;">
+    <div class="w-header" style="padding:0 20%;">
+        <div style="float:left">
+            <a href="../../index.html"><img src="../../imgs/logo-small.png" alt="智云服logo" title="智云服" style='vertical-align:middle;'></a>
+        </div>
+        <a class="goIndex" style="color:#2F8BE6;" title="返回智云服首页" href="../../index.html">返回首页</a>
+    </div>
+        <div class="content" style="width:50%;">
+            <div class="conHeader">
+                欢迎注册
+            </div>
+            <div class="conContent">
+                <div class="item">
+                    <ul class="itemUl">
+                        <li class="isactive" value="1"><img src="../../imgs/phone.png"/>&nbsp;&nbsp;手机注册</li>
+                        <li style="width:20%;">|</li>
+                        <li value="2"><img src="../../imgs/note-hui.png"/>&nbsp;&nbsp;邮箱注册</li>
+                    </ul>
+                </div>
+                <form id="form">
+                    <div class="item">
+                        <input type="text" value="" autocomplete="off" name="customerAccount" id="customerAccount" class="BigInput phone" datatype="m" errormsg="请填写正确的手机号" placeholder="手机号" nullmsg="请填写手机号"/>
+                        <div class="Validform_checktip Validform_phone"></div>
+                    </div>
+
+                    <div class="item" style="position:relative;">
+                        <input type="text" value="" autocomplete="off" style="width:60%;" name="code" id="code" class="SmallInput " datatype="n" nullmsg="请填写验证码" errormsg="验证码不正确" placeholder="短信验证"/>
+                        <div class="Validform_checktip Validform_checktip_phone"></div>
+                        <input class="SmallInput getCode getCodePhone" type="button" onclick="getCodePhone()"  title="发送验证码" style="cursor:pointer;"  value='发送验证码'>
+                    </div>
+                    <div class="item">
+                        <input type="password" value="" autocomplete="off" name="customerPassword" id="customerPassword" class="BigInput customerPhone" datatype="*6-18" errormsg="密码范围在6~18位之间" nullmsg="请填写密码" placeholder="密码"/>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item">
+                        <input type="password" value="" autocomplete="off" name="password2" id="password2" class="BigInput" datatype="*" recheck="customerPassword" nullmsg="请再填写一次密码" placeholder="确认密码" errormsg="两次填写的密码不一致"/>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item" style='color:#666;height:50px;position:relative;'>
+                        <input name="shoppingsite2" class="rt2" id="shoppingsite21" type="checkbox"  value="1" datatype="*" nullmsg="您还没有同意智云服注册协议" placeholder=""/><label for="shoppingsite21" style="position:absolute;top:-2px;left:18px;cursor:pointer;">同意智云服注册协议</label>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item" style="height:50px;">
+                        <input type="button"  class='BigInput' title="提交" value='提交' onclick="getPhone()"  style='background:#2F8BE6;color:#fff;cursor:pointer;'/>
+                    </div>
+                    <div class='item' style='line-height:50px;text-align:center;color:#333;'>
+                        已有账号,<a href="../login/index.html" title="去登录" style="color:#2F8BE6;">去登录</a>
+                    </div>
+                </form>
+                <form id="form1" style="display:none;">
+                     <div class="item">
+                        <input type="text" value="" autocomplete="off" name="customerAccount" id="customerAccount" class="BigInput email" datatype="e" errormsg="请填写正确的邮箱" placeholder="邮箱" nullmsg="请填写邮箱"/>
+                        <div class="Validform_checktip Validform_email"></div>
+                    </div>
+                     <div class="item" style="position:relative;">
+                        <input type="text" value="" autocomplete="off" style="width:60%;" name="codeEmail" id="codeEmail" class="SmallInput" datatype="n" nullmsg="请填写验证码" errormsg="验证码不正确" placeholder="邮箱验证"/>
+                        <div class="Validform_checktip Validform_checktip_email"></div>
+                        <input class="SmallInput getCode getCodeEmail" type="button" onclick="getCodeEmail()" style="cursor:pointer;" title="发送验证码"  value='发送验证码'>
+                    </div>
+                    <div class="item">
+                        <input type="password" value="" autocomplete="off" name="customerPassword" id="customerPassword" class="BigInput customerEmai" datatype="*6-18" errormsg="密码范围在6~18位之间" nullmsg="请填写密码" placeholder="密码"/>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item">
+                        <input type="password" value="" autocomplete="off" name="password2" id="password2" class="BigInput" datatype="*" recheck="customerPassword" nullmsg="请再填写一次密码" placeholder="确认密码" errormsg="两次填写的密码不一致"/>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item" style='color:#666;height:50px;position:relative;'>
+                        <input name="shoppingsite3" class="rt2" id="shoppingsite3" type="checkbox"  value="1" datatype="*" nullmsg="您还没有同意智云服注册协议" placeholder=""/><label for="shoppingsite3"  style="position:absolute;top:-2px;left:18px;cursor:pointer;">同意智云服注册协议</label>
+                        <div class="Validform_checktip"></div>
+                    </div>
+                    <div class="item" style="height:50px;">
+                        <input type="button"  class='BigInput' title="提交" value='提交' onclick="getEmail()"  style='background:#2F8BE6;color:#fff;cursor:pointer;'/>
+                    </div>
+                    <div class='item' style='line-height:50px;text-align:center;color:#333;'>
+                        已有账号,<a href="../login/index.html" title="去登录" style="color:#2F8BE6;">去登录</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+</body>
+<script type="text/javascript" src="../../resource/jquery/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../resource/validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="../../resource/js/tools.js"></script>
+<script type="text/javascript" src="../../resource/jBox/jquery.jBox-2.3.min.js"></script>
+<script type="text/javascript" src="../../resource/jBox/i18n/jquery.jBox-zh-CN.js"></script>
+<script type='text/javascript' src="../../resource/js/api.js"></script>
+<script type="text/javascript" src="../../resource/jquery/jQuery.XDomainRequest.js"></script>
+<script type="text/javascript" src="index.js"></script>
+</html>

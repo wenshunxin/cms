@@ -1,0 +1,472 @@
+<link rel="stylesheet" href="./index.css">
+<link rel="stylesheet" href="dataCon/index.css">
+<style>
+    .y-virtualDev-main{
+        font-size: 14px !important;
+    }
+</style>
+<div class="y-virtualDev-main" style="margin: 20px 0 0 0;border: 1px solid #efefef;border-radius: 4px;overflow: hidden;height: auto;">
+  <div style="line-height: 50px;background: #f0f0f0;padding-left: 20px;font-size: 16px;">
+    <strong>虚拟设备</strong>
+  </div>
+  <div style="padding: 22px;">
+    <div style="line-height:49px;margin-bottom: 22px;">
+      <div style="float: left; width: 25%;">
+        <p>
+          设备ID：
+          <span class="deviceId">7618D988363BD0B4</span>
+        </p>
+      </div>
+      <div style="float: left; width: 25%;display: none;">
+        <p>
+          Passcode：
+          <span>123456</span>
+        </p>
+      </div>
+      <div style="float: left; width: 25%;position: relative;">
+        <div>
+          <p style="float: left;">设备二维码：</p>
+          <!-- <img src="" alt="" style="width: 40px;height: 40px;display: block;background: #000;position: absolute;top: 0;bottom: 0;margin: auto;left: 104px;" class="ewm"> -->
+          <div id="output" style="float: left;" class="ewm"></div>
+        </div>
+        <div id="ewm1" style="width: 100px;height: 100px;display: block;position: absolute;top: 49px;margin: auto;left: 0;display: none;" class="ewm1"></div>
+      </div>
+      <div style="float: left; width: 25%;">
+        <button style="background: #2F8BE6;border: 0;border-radius: 4px;color: #fff;font-size: 16px;padding: 10px 18px;display: block;cursor: pointer;line-height: 29px;" class="startUp">启动虚拟设备</button>
+        <button style="background: #999;border: 0;border-radius: 4px;color: #fff;font-size: 16px;padding: 10px 18px;cursor: pointer;display: none;line-height: 29px;" class="endDown">关闭虚拟设备</button>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+    <div style="border: 1px solid #eee;border-radius: 10px;padding: 12px;margin-bottom: 42px;">
+      <h2 style="line-height: 60px;">虚拟设备使用指导</h2>
+      <p style="color: #666;font-size: 14px;line-height: 32px;">1.启动虚拟设备，通过您自己开发的App或者智云服提供的<a href="javascript:void(0);" style="color: #2F8BE6;">Demo App</a>扫描虚拟设备二维码来绑定虚拟设备，或者输入虚拟设备的设备ID和passcode来绑定该虚拟设备。 </p>
+      <p style="color: #666;font-size: 14px;line-height: 32px;">2.绑定该虚拟设备之后，在下方设置数据点的值，点击“上报数据”按钮。可将相应的数据上报到云端，消息log会显示在右方的消息区域内。</p>
+    </div>
+    <div style="overflow: hidden;position: relative;" class="haveS">
+      <div style="position: absolute;left: 0;top: 0;bottom: 0;right: 0;background: #fff;opacity: 0.1;z-index: 3;cursor: not-allowed;filter:alpha(opacity=10);" class="disa"></div>
+      <!--  -->
+      <div style="float: left;width: 59%;border: 1px solid #eee;" class="y-virtualDev-main-left"></div>
+      <div style="float: right;width: 39%;border: 1px solid #eee;" class="y-virtualDev-main-right">
+        <p style="line-height: 44px;background: #f0f0f0;padding-left: 40px;">消息log</p>
+        <div class="y-virtualDev-main-right-main" style="padding-top: 15px;height: 250px;overflow-y: auto;">
+          <div style="color: #666;padding: 0 20px;margin-bottom: 20px;">
+            <p style="line-height: 30px;">设备上线：<span class="virtualTimes" style="margin-left: 20px;"></span></p>
+            <p class="virtualResult"></p>
+          </div>
+          <div style="color: #666;padding: 0 20px;margin-bottom: 20px;">
+            <p style="line-height: 30px;">上报数据：<span class="virtualTimes" style="margin-left: 20px;"></span></p>
+            <p class="virtualCon" style="word-break:break-all"></p>
+          </div>
+          <div style="color: #666;padding: 0 20px;margin-bottom: 20px;">
+            <p style="line-height: 30px;">下发数据：</p>
+          </div>
+        </div>
+        <div style="margin: 15px 0 10px 0;">
+          <button style="display: block;margin: 0 auto;background: #2F8BE6;border: 0;border-radius: 4px;color: #fff;font-size: 16px;padding: 10px 18px;cursor: pointer;" onclick="clearVirtual()">清空日志</button>
+        </div>
+      </div>
+    </div>
+    <div class="noHaveS" style="height: 400px;display: none;">
+      <p style="font-size: 14px;color: #333;margin-bottom: 30px;text-align: center;">您还没有添加数据点!</p>
+      <button style="margin: 0 auto;width: 173px;height: 40px;line-height: 40px;background: #2F8BE6;border: 0;border-radius: 4px;display: block;color: #fff;font-size: 18px;position: relative;cursor: pointer;" class="addDataPoint">
+                              <!-- <img src="virtualDev/1.png" alt="" style="position: absolute;width: 18px;height: 18px;"> -->
+                              +&nbsp;添加数据点</button>
+    </div>
+  </div>
+
+</div>
+<!-- 底部样式 -->
+<!-- <div class="y-bottom"></div> -->
+<div class="popBoxDiv" onclick="closePop()"></div>
+
+<!-- 修改和添加弹框 -->
+<div class="popBox">
+  <div class="popBoxTop">
+    <span>添加数据点</span>
+    <img src="../../imgs/cloud/close.png" alt="" title="关闭" onclick="closePop()">
+  </div>
+  <div class="popBoxTable">
+    <form id="form" onkeydown="if(event.keyCode==13 || event.which == 13){return false;}">
+      <table>
+        <tr>
+          <td class="frist">
+            <label for=""><span>*</span>显示名称</label>
+          </td>
+          <td class="two">
+            <input id="displayName" name="displayName" type="text" class="BigInput" placeholder="显示名称" datatype="*" maxlength="20" autocomplete="off" />
+            <div class="Validform_checktip"></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="frist">
+            <label for=""><span>*</span>标识名</label>
+          </td>
+          <td class="two" style="position:relative;">
+            <input type="text" id="fieldName" name="fieldName" class="BigInput" placeholder="标识名" datatype="*1-20" maxlength="20" errormsg="请填写数字、字母、下划线，以字母开头" autocomplete="off" />
+            <div class="Validform_checktip"></div>
+            <img class="biaoShi" style="position:absolute;right:0px;top:5px;" src="../../imgs/cloud/help.png" alt="">
+          </td>
+        </tr>
+        <tr>
+          <td class="frist">
+            <label for=""><span></span>读写类型</label>
+          </td>
+          <td class="two" style="position:relative;">
+            <select class="BigInput" id="rwType" name="rwType">
+                                <option value="0">可写</option>
+                                <option value="1">只读</option>
+                                <option value="2">故障</option>
+                                <option value="3">报警</option>
+                            </select>
+            <div class="Validform_checktip"></div>
+            <img class="readyW" style="position:absolute;right:0px;top:5px;" src="../../imgs/cloud/help.png" alt="">
+          </td>
+        </tr>
+        <tr>
+          <td class="frist">
+            <label for=""><span></span>数据类型</label>
+          </td>
+          <td class="two" style="position:relative;">
+            <select id="fieldType" name="fieldType" class="BigInput" onchange="decimals()">
+                                <option value="BOOL">布尔型</option>
+                                <option value="NUMBER">数值型</option>
+                                <option value="STRING">字符串</option>
+                                <option value="RAW">扩展型</option>
+                            </select>
+            <div class="Validform_checktip"></div>
+            <img class="dataL" style="position:absolute;right:0px;top:5px;" src="../../imgs/cloud/help.png" alt="">
+          </td>
+        </tr>
+        <tr>
+            <td class="frist">
+                <label for=""><span>*</span>数据长度</label>
+            </td>
+            <td class="two">
+                <input type="text" id="dataLength" name="dataLength" datatype="n" class="BigInput" placeholder="数据长度"  maxlength="3" autocomplete="off"/>
+                <div class="Validform_checktip"></div>
+            </td>
+        </tr>
+        <tr>
+          <td class="frist">
+            <label for=""><span></span>单位</label>
+          </td>
+          <td class="two">
+            <input type="text" id="fieldUnit" name="fieldUnit" class="BigInput" placeholder="单位" maxlength="10" autocomplete="off" />
+            <div class="Validform_checktip"></div>
+          </td>
+        </tr>
+        <tr style="display:none;" class="decimals">
+          <td class="frist">
+            <label for=""><span>*</span>小数点位数</label>
+          </td>
+          <td class="two">
+            <input type="text" id="decimalDigit" name="decimalDigit" class="BigInput" placeholder="小数点位数" datatype="empty | n" value="0" autocomplete="off" />
+            <div class="Validform_checktip"></div>
+          </td>
+        </tr>
+        <tr>
+          <td class="frist">
+            <label for=""><span></span>备注</label>
+          </td>
+          <td class="two" style="position:relative;">
+            <textarea name="remark" id="remark" class="BigInput" style="height:80px;" placeholder="备注" maxlength="300"></textarea>
+            <span style="position:absolute;right:15%;bottom:0;color:#999999;font-size:12px;">0/300</span>
+            <div class="Validform_checktip"></div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="last">
+            <input type="button" class="SmallInput addInfo" title="添加" onclick="addInfo()" style="height:35px;line-height:35px;" value="添加" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+<script src="./virtualDev/jquery.qrcode.min.js"></script>
+<script>
+  $(function() {
+    getID();
+    virtualDev();
+    $("#form input[type=text],select,textarea").focus(function(event) {
+      /* Act on the event */
+      $(this).css("background", "#fff")
+    });
+
+    var isflag = false;
+    var input = document.createElement('input');
+    if ("placeholder" in input) {
+      // alert("支持")
+      isflag = true;
+    } else {
+      // alert("不支持")
+      isflag = false;
+      JPlaceHolder.init();
+      $(".spanTextInput").css("top", "8px");
+    }
+    $("#form").Validform({
+      datatype: {
+        "*1-20": /^[a-zA-Z][0-9a-zA-Z_]{0,20}$/,
+        "empty": /^\s*$/
+      },
+      tiptype: function(msg, o, cssctl) {
+        if (!o.obj.is("form")) { //验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+          if (isflag) {
+            var objtip = o.obj.siblings(".Validform_checktip").show();
+          } else {
+            var objtip = o.obj.parent().siblings(".Validform_checktip").show();
+          }
+          cssctl(objtip, o.type);
+          objtip.text(msg);
+          $(".Validform_right").text("")
+        }
+      },
+      showAllError: false,
+      ignoreHidden: true,
+      beforeSubmit: function(form) {
+        var param = tools.formToJson($("#form"));
+        // console.log(param)
+        var url;
+        //添加数据点
+        url = api.addDataPoint;
+        param["productionId"] = $("#product_key").val();
+        param["customerId"] = getCookie("customerId");
+        getDataTwo(url, param, "post", true, function(json) {
+          if (json.rtState) {
+            top.$.jBox.tip(json.rtMsg, "success", {
+              timeout: 500,
+              closed: function() {
+                $(".w-center").load("dataCon/dataCon.html");
+              }
+            });
+          } else {
+            top.$.jBox.tip(json.rtMsg, "error", {
+              timeout: 500,
+              closed: function() {
+                if(json.rtMsg=="表示名已存在"){
+                      $("#fieldName").addClass('Validform_error');
+                      $(".Validform_checktip_fielname").addClass('Validform_wrong').text(json.rtMsg);
+                  }
+                if (json.statusCode == 911) {
+                  window.location.href = "../../components/login/index.html"
+                }
+              }
+            });
+          }
+        })
+        return false;
+      }
+    });
+
+  })
+  var erweimaData = "";
+  // 获取虚拟设备数据
+  function virtualDev() {
+    getDataTwo(api.getEquipmentDataPoints, {
+      "customerId": getCookie("customerId"),
+      "productId": $("#product_key").val()
+    }, "", true, function(data) {
+      // console.log(data);
+      if (data.rtState) {
+        // 有数据的时候显示虚拟设呗
+        if (data.rtData.records.length) {
+          $(".noHaveS").hide();
+          $(".haveS").show();
+          var html = "<p style='line-height: 44px;background: #f0f0f0;padding-left: 40px;'>上报数据</p>" +
+            "<div style='color: #666;height: 250px;overflow-y: auto;'>" +
+            "<div class='y-virtualDev-main-left-main' style='width: 80%;margin: 0 auto;'>";
+          $.each(data.rtData.records, function(k, v) {
+            // console.log(v);
+            var type = "";
+            if (v.fieldType == "BOOL") {
+              type += "<select name='' id='' style='border: 0;border-radius: 2px;outline: none;background: #f0f0f0;line-height: 30px;float: right;margin-top: 15px;width: 140px;height: 30px;font-size: 14px;' class='" + v.fieldName + "'>" +
+                "<option value='0'>0</option>" +
+                "<option value='1'>1</option>" +
+                "</select>";
+            } else if (v.fieldType == "NUMBER") {
+              type += "<input type='text' style='float: right;height: 30px;width: 140px;background: #f0f0f0;outline: none;border: 0;border-radius: 2px;margin-top: 15px;' onkeyup='valid(this)' class='" + v.fieldName + " numbers clearS'>" +
+                "<p style='position: absolute;right: 0;top: 45px;line-height: 14px;font-size:14px;display: none;'>只能输入数字</p>";
+            } else if (v.fieldType == "STRING") {
+              type += "<input type='text' style='float: right;height: 30px;width: 140px;background: #f0f0f0;outline: none;border: 0;border-radius: 2px;margin-top: 15px;' class='" + v.fieldName + " clearS' onkeyup='validStr(this)'>" +
+                "<p style='position: absolute;right: 0;top: 45px;line-height: 14px;font-size:14px;display: none;'>最多输入20个字</p>";;
+            } else {
+                type += "<input type='text' style='float: right;height: 30px;width: 140px;background: #f0f0f0;outline: none;border: 0;border-radius: 2px;margin-top: 15px;' class='" + v.fieldName + " clearS'>"
+            }
+            html += "<div style='overflow: hidden;line-height: 60px;position: relative;'>" +
+              "<p style='float: left;'>" + v.displayName + "(" + v.fieldName + ")</p>" +
+              type +
+              "</div>"
+          })
+          html += "</div>" +
+            "</div>" +
+            "<div style='margin: 15px 0 10px 0;'>" +
+            "<button style='display: block;margin: 0 auto;background: #2F8BE6;border: 0;border-radius: 4px;color: #fff;font-size: 16px;padding: 10px 18px;cursor: pointer;' onclick='reportData()'>上报数据</button>" +
+            "</div>";
+          $(".y-virtualDev-main-left").html(html);
+          // $(".w-content").outerHeight($(".w-center").outerHeight() + "px");
+          if ($(".y-virtualDev-main-left").outerHeight() > $(".y-virtualDev-main-right").outerHeight()) {
+            $(".y-virtualDev-main-right").outerHeight($(".y-virtualDev-main-left").outerHeight() + "px");
+            $(".y-virtualDev-main-right-main").outerHeight($(".y-virtualDev-main-left-main").outerHeight() + "px");
+          } else {
+            $(".y-virtualDev-main-left").outerHeight($(".y-virtualDev-main-right").outerHeight() + "px");
+            $(".y-virtualDev-main-left-main").outerHeight($(".y-virtualDev-main-right-main").outerHeight() + "px");
+          }
+
+        } else {
+          // 无数据的时候
+          $(".noHaveS").show();
+          $(".haveS").hide();
+          $(".w-content").outerHeight($(".w-center").outerHeight() + "px");
+        }
+      }
+    })
+  }
+  // 只允许填写数字
+  function valid(aa) {
+    // console.log($(aa).val());
+    var vali = new RegExp(/^[+-]?\d*[.]?\d*$/);
+    var bb = $(aa).val();
+    // console.log(!(vali.test(bb)))
+    if (!(vali.test(bb))) {
+      $(aa).next().show();
+      return false;
+    } else {
+      $(aa).next().hide();
+      return false;
+    }
+  }
+
+  function validStr(aa) {
+    var len = $(aa).val().length;
+    // console.log(len)
+    var lenVal = $(aa).val();
+    if (len > 20) {
+      lenVal = lenVal.slice(0, 21);
+      $(aa).val(lenVal);
+      // $(aa).next().show();
+    } else {
+      $(aa).val(lenVal);
+    }
+  }
+  // 获取设备id
+  function getID() {
+    getDataTwo(api.getEquipmentId, {
+      "custPid": $("#custPid").val()
+    }, "", true, function(data) {
+      // console.log(data);
+      if (data.rtState) {
+        if (data.rtData) {
+          $(".deviceId").html(data.rtData.equipmentId);
+          jQuery('#output').qrcode({
+            render: 'table',
+            width: 50,
+            height: 50,
+            text: '{"custDeviceId": "' + data.rtData.equipmentId + '", "productKey": "' + $("#custPid").val() + '"}'
+          });
+          erweimaData = '{"custDeviceId": "' + data.rtData.equipmentId + '", "productKey": "' + $("#custPid").val() + '"}';
+          if (data.rtData.productState == 0) {
+            $(".startUp").on("click", function() {
+              $(".endDown").show();
+              $(this).hide();
+              $(".disa").hide();
+            })
+            // 添加数据点列表
+            $(".addDataPoint").on("click", function() {
+              $(".popBoxDiv").show();
+              $(".popBox").show();
+            })
+          } else if (data.rtData.productState == 1) {
+            $(".startUp").on("click", function() {
+              top.$.jBox.tip("该产品已发布，虚拟设备不可操作", "error", {
+                timeout: 1000
+              });
+              return false;
+            });
+            $(".addDataPoint").on("click", function() {
+              top.$.jBox.tip("该产品已发布，虚拟设备不可操作", "error", {
+                timeout: 1000
+              });
+              return false;
+            })
+          }
+        }
+      }
+    })
+  }
+  // 上报数据
+  function reportData(data) {
+    getDataTwo(api.getEquipmentDataPoints, {
+      "customerId": getCookie("customerId"),
+      "productId": $("#product_key").val()
+    }, "", true, function(data) {
+      if (data.rtState) {
+        if (data.rtData.records.length) {
+          // console.log(data)
+          var f = true;
+          for (var i = 0, len = $(".numbers").length; i < len; i++) {
+            // console.log(i);
+            if (!(new RegExp(/^[+-]?\d*[.]?\d*$/).test($(".numbers").eq(i).val()))) {
+              f = false;
+              break;
+            }
+          }
+          // console.log(f)
+          var obj = {};
+          $.each(data.rtData.records, function(k, v) {
+            var name = v.fieldName;
+            obj[name] = $("." + name).val();
+          })
+          // console.log(obj);
+          if (f) {
+            getDataTwo(api.uploadEquipmentLog, {
+              "equipmentId": $(".deviceId").text(),
+              "customerId": getCookie("customerId"),
+              "datas": JSON.stringify(obj)
+            }, "", true, function(data) {
+              // console.log(data);
+              if (data.rtState) {
+                $(".virtualCon").html(data.rtData.remark);
+                $(".virtualResult").html(data.rtMsg);
+                $(".virtualTimes").html(zhrq(data.rtData.operateTime));
+                $(".clearS").val("");
+              }
+            })
+          }
+        }
+      }
+    })
+  }
+
+  function clearVirtual() {
+    $(".virtualCon").html("");
+    $(".virtualResult").html("");
+    $(".virtualTimes").html("");
+  }
+
+  // 二维码放大缩小
+  $(".ewm").on("mouseover", function() {
+    $(".ewm1").show();
+    jQuery('#ewm1').qrcode({
+      render: 'table',
+      width: 100,
+      height: 100,
+      text: erweimaData
+    });
+  }).on("mouseout", function() {
+    $(".ewm1").hide();
+    $("#ewm1").empty();
+  })
+
+  $(".endDown").on("click", function() {
+    $(".startUp").show();
+    $(this).hide();
+    $(".disa").show();
+  })
+
+  function addInfo() {
+    $("#form").submit();
+  }
+</script>
+</body>
+
+</html>

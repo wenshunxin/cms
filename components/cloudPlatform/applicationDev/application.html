@@ -1,0 +1,332 @@
+<div class="addProductContent">
+    <div class="addText">应用列表</div>
+    <div class="dataCon">
+        <!--数据点列表没有数据点列表时-->
+        <div class="dataConNone">
+            <img src="../../imgs/cloud/dataConNone.png" alt="无添加应用">
+            <p>您还没有添加应用哦！</p>
+            <div style="margin-bottom:170px;"><input type="button" value="添加应用" class="SmallInput" title="添加应用" onclick="addDataPop()"/></div>
+        </div>
+        <!-- 有数据显示列表 -->
+        <div class="dataConList">
+            <p><input type="button" onclick="addDataPop()" type="button" value="添加应用" class="SmallInput" title="添加应用"/></p>
+
+            <table border="0" cellspacing="0" cellpadding="0" id="table">
+                <thead>
+                    <tr>
+                        <td>应用名称</td>
+                        <td>平台 </td>
+                        <td>App ID </td>
+                        <td>App Secret</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+            <div style="height:80px;line-height:80px;text-align:right;margin-top:20px;">
+                <ul id="pagination" class="pagination" style="vertical-align:middle;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popBoxDiv" onclick="closePop()"></div>
+
+    <!-- 修改和添加弹框 -->
+<div class="popBox" style="margin-top:150px;">
+    <div class="popBoxTop">
+        <span>添加应用</span>
+        <img src="../../imgs/cloud/close.png" alt="" title="关闭" onclick="closePop()">
+    </div>
+    <div class="popBoxTable">
+        <form id="form" onkeydown="if(event.keyCode==13 || event.which == 13){return false;}">
+            <table>
+                <tr>
+                    <td class="frist">
+                        <label for="">应用名称</label>
+                    </td>
+                    <td class="two">
+                        <input type="text" class="BigInput" id="appName" datatype="*" maxlength="20" name="appName" placeholder="应用名称"   nullmsg="请填写应用名称" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr class="plaform">
+                    <td class="frist">
+                        <label for=""><span></span>平台</label>
+                    </td>
+                    <td class="two">
+                        <select  class="BigInput" id="appSystem" name="appSystem">
+                            <option value="IOS">IOS</option>
+                            <option value="android">android</option>
+                        </select>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="2" class="last">
+                        <input type="button" class="SmallInput addInfo" title="添加"  onclick="addPlaform()" value="添加" />
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" id="sid" name="sid"/>
+        </form>
+    </div>
+</div>
+
+    <!-- 删除弹框-->
+<div class="popDel">
+    <span>确定要删除该数据点？</span>
+    <p>
+        <input type="button" value="返回" class="SmallInput" style="background:#B5B5B5;margin-right:20px;" title="返回" onclick="closePop()"/>
+        <input type="button" value="确定" class="SmallInput" onclick="delPlaform()" title="确定" style="background:#2F8BE6;"/>
+    </p>
+
+</div>
+<script src="../../resource/js/api.js"></script>
+<script>
+    $(function(){
+        // $('input').keypress(function(evt){
+        //     var e =evt||window.event;
+        //     if(e.preventDefault()){
+        //         e.preventDefault();
+        //     }else {
+        //         e.returnValue=false;
+        //     }
+        // });
+        getCustomerAppDatagrid();
+        // console.log($(".addProductContent").height())
+        if($(".addProductContent").height()<700){
+            $(".w-content").height("700px")
+        }
+
+        var isflag=false;
+        var input = document.createElement('input');
+        if("placeholder" in input){
+            // alert("支持")
+            isflag=true;
+        }else{
+            // alert("不支持")
+            isflag=false;
+            JPlaceHolder.init();
+            $(".spanTextInput").css("top","8px");
+            $(".spanTextInput").hide();
+        }
+        $("#form").Validform({
+            datatype:{
+                "*1-20":/^[a-zA-Z][0-9a-zA-Z_]+$/
+            },
+            tiptype:function(msg,o,cssctl){
+                if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                    if(isflag){
+                        var objtip=o.obj.siblings(".Validform_checktip").show();
+                    }else{
+                        var objtip=o.obj.parent().siblings(".Validform_checktip").show();
+                    }
+                    cssctl(objtip,o.type);
+                    objtip.text(msg);
+                    $(".Validform_right").text("")
+                }
+            },
+            showAllError:false,
+            ignoreHidden:true,
+            beforeSubmit:function(form){
+                var param=tools.formToJson($("#form"));
+
+                // console.log(param)
+                var url;
+                //添加数据点
+                if($(".addInfo").val()=="添加"){
+                    url=api.saveCustomerApp;
+                    delete param["sid"];
+                    param["customerId"]=getCookie("customerId");
+                    // console.log(param)
+                }else if($(".addInfo").val()=="修改"){
+                    url=api.updateCustomerApp;
+                    // console.log(param)
+                }
+                getDataTwo(url,param,"post",true,function(json){
+                    // console.log(json)
+                    if(json.rtState){
+                        top.$.jBox.tip(json.rtMsg,"success",{
+                            timeout:500,
+                            closed:function(){
+                                closePop();
+                                getCustomerAppDatagrid();
+
+                            }
+                        });
+                    }else{
+                        top.$.jBox.tip(json.rtMsg,"error",{
+                            timeout:500,
+                            closed:function(){
+                                if(json.statusCode==911){
+                                    window.location.href="../../components/login/index.html"
+                                }
+                            }
+                        });
+                    }
+                })
+                return false;
+            }
+        });
+    })
+    // 显示弹框
+    function addDataPop(){
+        $("#appName").removeClass('Validform_error');
+        $("#appName").siblings('div').removeClass('Validform_wrong').text("");
+        $(".popBoxDiv").show();
+        $(".popBox").show();
+        $(".plaform").show();
+        $(".popBox .popBoxTop span").text("添加应用");
+        $("#appName").val("");
+        $(".popBox input[type=button]").val("添加").attr("title","添加");
+    }
+
+    // 关闭弹框
+    function closePop(){
+        $(".popBoxDiv").hide();
+        $(".popBox").hide();
+        $(".popDel").hide();
+        $("#appName").removeClass('Validform_error');
+        $("#appName").siblings('div').removeClass('Validform_wrong').text("");
+    }
+    //修改应用
+    function editerData(sid){
+        $(".popBoxDiv").show();
+        $(".popBox").show();
+        $(".plaform").hide();
+        $(".popBox .popBoxTop span").text("修改应用");
+        $(".popBox input[type=button]").val("修改").attr("title","修改");
+        $("#sid").val(sid);
+        var param={
+            "sid":sid
+        }
+        getDataTwo(api.getCustomerAppBySid,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                $("#appName").val(json.rtData.appName);
+                $("#appSystem").val(json.rtData.appSystem);
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+    }
+    //删除应用
+    function delData(sid){
+        $("#sid").val(sid);
+        $(".popBoxDiv").show();
+        $(".popDel").show();
+    }
+
+    // 确定删除应用
+    function delPlaform(){
+        var param={
+            "sid":$("#sid").val()
+        }
+        getDataTwo(api.deleteCustomerApp,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                top.$.jBox.tip(json.rtMsg,"success",{
+                    timeout:500,
+                    closed:function(){
+                        closePop();
+                        getCustomerAppDatagrid();
+                    }
+                })
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+    }
+
+    //添加修改应用
+    function addPlaform(){
+        $("#form").submit();
+    }
+    //获取应用列表
+    function getCustomerAppDatagrid(){
+        var param={
+            "customerId":getCookie("customerId"),
+            "row": 15,
+            "page": 1
+        }
+        $("#tbody tr").remove();
+
+        getDataTwo(api.getCustomerAppDatagrid,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rows.length>0){
+                $(".dataConNone").hide();
+                $(".dataConList").show();
+                $("#tbody tr").remove();
+                datalist(json.rows)
+                var visiblePages = 5;
+                var total = 1;
+                if(json.total/15 < 5) {
+                    if(json.total%15 > 0){
+                        total = json.total/15 +1;
+                        visiblePages = json.total/15 + 1;
+                    }else {
+                        total = json.total/15;
+                        visiblePages = json.total/15;
+                    }
+                }
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+                $('#pagination').twbsPagination({
+                    totalPages: total,
+                    visiblePages: visiblePages
+                }).on('page', function(event, page) {
+                    // console.log(page);
+                    var parama={
+                        "customerId":getCookie("customerId"),
+                        "row": 15,
+                        "page": page
+                    }
+                    getDataTwo(api.getCustomerAppDatagrid, parama, "post", true, function(json) {
+                        // console.log(data)
+                        $("#tbody tr").remove();
+                        datalist(json.rows);
+                    })
+                })
+            }else{
+                $(".dataConNone").show();
+                $(".dataConList").hide();
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+            }
+        })
+    }
+
+    function datalist(data){
+        var tr;
+        for(var i in data){
+            var obj = data[i];
+            tr="<tr><td>"+obj.appName+"</td>"
+            +"<td>"+obj.appSystem+"</td>"
+            +"<td>"+obj.appKey+"</td>"
+            +"<td>"+obj.appSecret+"</td>"
+            +"<td><img src=\"../../imgs/cloud/proEditer.png\" style=\"margin-right:20px;\" alt=\"修改\" title=\"修改\" onclick=\"editerData("+obj.sid+")\">"
+            +"<img src=\"../../imgs/cloud/dataConDel.png\" alt=\"删除\" title=\"删除\" onclick=\"delData("+obj.sid+")\"></td></tr>";
+            $("#tbody").append(tr)
+        }
+        // $('#table tr:even').css("background","#F6F6F6");
+    }
+</script>

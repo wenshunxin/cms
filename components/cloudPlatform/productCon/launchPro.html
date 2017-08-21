@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="index.css">
+<style>
+    .BigInput{
+        width:50px;
+        height:40px;
+        line-height: 40px;
+    }
+</style>
+<div class="addProductContent" style="height:754px;">
+    <div class="addText">发布产品</div>
+    <div class="launchPro">
+        <img src="../../imgs/cloud/launchProBox.png" alt="">
+        <p class="frist">
+            为了确保接入智云服的每一款智能硬件都是高质量并且都能长期稳定的运行，智云服目前提供免费的人工审核，利用我们专业的QA团队，我们将严格测试你的产品并为你提供产品测试报告，请完成发布申请后一周内邮寄你的新产品到我们的办公地址。
+        </p>
+        <p class="two">
+            通过发布后，您将获得7X24小时高速稳定的云服务器！
+        </p>
+        <div>
+            <input type="button" class="SmallInput" onclick="goBack()" value="返回" title="返回"/>
+            <input type="button" class="SmallInput" onclick="launch()" style="background:#2F8BE6;" value="马上申请" title ="马上申请"/>
+        </div>
+    </div>
+</div>
+<script>
+    function goBack(){
+        $(".w-center").load("productCon/productInfo.html")
+    }
+    function launch(){
+        var param={
+            "sid":$("#productSid").val()
+        }
+        getDataTwo(api.changeState,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                $("#productStatus").val(json.rtData.productStatus);
+                top.$.jBox.tip(json.rtMsg,"success",{
+                    timeout:500,
+                    closed:function(){
+                        $(".w-center").load("demo1.html",function(){
+                            $(".wEast_ul_liApplica").removeClass('isActiveLi').children('img').attr("src","../../imgs/cloud/yingyong.png");
+                            $(".wEast_ul_liHome").addClass('isActiveLi').children('img.imgg').attr("src","../../imgs/cloud/home.png");
+                            $(".wEast_ul_liProduct").removeClass('isActiveLi').children('img.imgg').attr("src","../../imgs/cloud/product.png");
+                        });
+                    }
+                })
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>

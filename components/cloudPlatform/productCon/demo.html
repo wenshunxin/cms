@@ -1,0 +1,101 @@
+
+            <div class="addProductContent">
+                <div class="addText">产品信息
+                    <ul class="InfoImg">
+                        <li><img src="../../imgs/cloud/productOnload.png" alt="" title="发布" onclick="launchPro()"/></li>
+                        <li><img src="../../imgs/cloud/proEditer.png" alt="" onclick="editerInfo()" title="修改"></li>
+                        <li><img src="../..//imgs/cloud/proDel.png" alt="" title="删除"></li>
+                    </ul>
+                </div>
+                <div class="infoTable">
+                    <table>
+                        <tr>
+                            <td>
+                                <span>产品名称</span>
+                                <p><span >空气净化器</span><input type="text" class="BigInput" style="width:50%;height:40px;display:none;"/></p>
+                            </td>
+                            <td>
+                                <span>产品类型</span>
+                                <p><select name="productType" disabled="true" id="productType" class="BigInput" style="font-size:14px;padding:10px 8px;width:50%;height:40px;">
+                                    <option value="智能家居">智能家居</option>
+                                    <option value="智慧医疗">智慧医疗</option>
+                                    <option value="可穿戴设备">可穿戴设备</option>
+                                    <option value="智慧城市">智慧城市</option>
+                                    <option value="工业设备">工业设备</option>
+                                    <option value="农林业生态">农林业生态</option>
+                                    <option value="其他">其他</option>
+                                </select></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>产品型号</span>
+                                <p><span >天创净化器二代</span><input type="text" class="BigInput" style="width:50%;height:40px;display:none;"/></p>
+                            </td>
+                            <td>
+                                <span>技术方案</span>
+                                <p><span>WIFI</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>数据传输方式</span>
+                                <p><span>定长</span></p>
+                            </td>
+                            <td>
+                                <span>ProductKey</span>
+                                <p><span>f06ae75fcabc4e27b579410d5bfaeffa</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>修改时间</span>
+                                <p><span>2016-07-19</span></p>
+                            </td>
+                            <td>
+                                <span>ProductSecret</span>
+                                <p><span>aed6*********************a2bc</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>创建时间</span>
+                                <p><span>2016-07-19</span></p>
+                            </td>
+                            <td>
+                                <span>描述</span>
+                                <p><span >无</span>
+                                <textarea  type="area" id="productDesc" name="productDesc" value="" autocomplete="off" style="height:100px;font-size:16px;line-height:30px;width:50%;display:none;" class="BigInput"  maxlength="300" placeholder="产品描述"></textarea ></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $("input[type=text],select,textarea").focus(function(event) {
+                /* Act on the event */
+                $(this).css("background","#fff");
+            });
+        })
+        var isflag;
+        //修改产品信息
+        function editerInfo(){
+            // alert()
+            $("select").removeAttr('disabled');
+            $("input").each(function(i){
+                $("input").show();
+                $("input").eq(i).siblings('span').hide();
+                $("input").eq(i).val($("input").eq(i).siblings('span').text());
+            });
+            $("textarea").show();
+            $("textarea").siblings('span').hide();
+            $("textarea").val($("textarea").siblings('span').text())
+        }
+        //发布产品
+        function launchPro(){
+            $(".w-center").load("productCon/launchPro.html")
+        }
+    </script>

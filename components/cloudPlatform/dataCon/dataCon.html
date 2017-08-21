@@ -1,0 +1,395 @@
+<link rel="stylesheet" href="index.css">
+<div class="addProductContent" style="height:800px;">
+    <div class="addText" style="position:relative;">数据点&nbsp;<img class="addTextImg" style="position:absolute;top:18px;left:85px;" src="../../imgs/cloud/help.png" alt="" title="">
+    </div>
+    <div class="dataCon">
+        <!--数据点列表没有数据点列表时-->
+        <div class="dataConNone">
+            <img src="../../imgs/cloud/dataConNone.png" alt="无数据点">
+            <p>您还没有添加数据点哦！</p>
+            <div><input type="button" value="添加数据点" class="SmallInput" title="添加数据点" onclick="editerData()"/></div>
+        </div>
+        <!-- 有数据显示列表 -->
+        <div class="dataConList">
+            <p><input type="button" onclick="editerData()" type="button" value="添加数据点" class="SmallInput" title="添加数据点"/></p>
+
+            <table border="0" cellspacing="0" cellpadding="0" id="table">
+                <thead>
+                    <tr>
+                        <td>显示名称</td>
+                        <td>标识名</td>
+                        <td>读写类型</td>
+                        <td>数据类型</td>
+                        <td>数据长度</td>
+                        <td>单位</td>
+                        <td>小数位</td>
+                        <td>备注</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+
+
+                </tbody>
+            </table>
+            <div style="height:80px;line-height:80px;text-align:right;margin-top:20px;">
+                <ul id="pagination" class="pagination" style="vertical-align:middle;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popBoxDiv" onclick="closePop()"></div>
+
+    <!-- 修改和添加弹框 -->
+<div class="popBox">
+    <div class="popBoxTop">
+        <span>添加数据点</span>
+        <img src="../../imgs/cloud/close.png" alt="" title="关闭" onclick="closePop()">
+    </div>
+    <div class="popBoxTable">
+        <form id="form" onkeydown="if(event.keyCode==13 || event.which == 13){return false;}">
+            <table >
+                <tr>
+                    <td class="frist">
+                        <label for=""><span>*</span>显示名称</label>
+                    </td>
+                    <td class="two">
+                        <input id="displayName" name="displayName" type="text" class="BigInput" placeholder="显示名称" maxlength="20" datatype="*" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span>*</span>标识名</label>
+                    </td>
+                    <td class="two" style="position:relative;">
+                        <input type="text" id="fieldName" name="fieldName" class="BigInput" placeholder="标识名" datatype="*1-20" maxlength="20" errormsg="请填写数字、字母、下划线，以字母开头" autocomplete="off"/ >
+                        <div class="Validform_checktip Validform_checktip_fielname"></div>
+                        <img class="biaoShi" style="position:absolute;right:0px;top:6px;" src="../../imgs/cloud/help.png" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span></span>读写类型</label>
+                    </td>
+                    <td class="two" style="position:relative;">
+                        <select  class="BigInput" id="rwType" name="rwType">
+                            <option value="0">可写</option>
+                            <option value="1">只读</option>
+                            <option value="2">故障</option>
+                            <option value="3">报警</option>
+                        </select>
+                        <div class="Validform_checktip"></div>
+                        <img class="readyW" style="position:absolute;right:0px;top:6px;" src="../../imgs/cloud/help.png" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span></span>数据类型</label>
+                    </td>
+                    <td class="two" style="position:relative;">
+                        <select  id="fieldType" name="fieldType" class="BigInput" onchange="decimals()">
+                            <option value="BOOL">布尔型</option>
+                            <option value="NUMBER">数值型</option>
+                            <option value="STRING">字符串</option>
+                            <option value="RAW">扩展型</option>
+                        </select>
+                        <div class="Validform_checktip"></div>
+                        <img class="dataL" style="position:absolute;right:0px;top:6px;" src="../../imgs/cloud/help.png" alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span>*</span>数据长度</label>
+                    </td>
+                    <td class="two">
+                        <input type="text" id="dataLength" name="dataLength" datatype="n" class="BigInput" placeholder="数据长度"  maxlength="3" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span></span>单位</label>
+                    </td>
+                    <td class="two">
+                        <input type="text" id="fieldUnit" name="fieldUnit" class="BigInput" placeholder="单位"  maxlength="10" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr style="display:none;" class="decimals">
+                    <td class="frist">
+                        <label for=""><span>*</span>小数点位数</label>
+                    </td>
+                    <td class="two">
+                        <input type="text" id="decimalDigit" name="decimalDigit" class="BigInput" placeholder="小数点位数" datatype="empty | n" value="" autocomplete="off"/>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="frist">
+                        <label for=""><span></span>备注</label>
+                    </td>
+                    <td class="two" style="position:relative;">
+                        <textarea name="remark" id="remark" class="BigInput" style="height:80px;line-height:25px;" placeholder="备注" maxlength="300"></textarea>
+                        <span id="spanText" style="position:absolute;right:15%;bottom:0;color:#999999;font-size:12px;">0/300</span>
+                        <div class="Validform_checktip"></div>
+                    </td>
+                </tr>
+                <tr >
+                    <td colspan="2" class="last">
+                        <input type="button"  class="SmallInput addInfo" style="height:35px;line-height:35px;" title="添加" onclick="addInfo()"  value="添加"/>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 修改数据获取sid -->
+            <input type="hidden" id="sid" name="sid"/>
+        </form>
+            <input type="hidden" id="delSid" name="delSid" value=""/>
+            <input type="hidden" id="productStatus" name="productStatus" value=""/>
+            <!-- productKey -->
+            <input type="hidden" id="productKey" name="productKey"/>
+    </div>
+</div>
+
+<!-- 删除弹框-->
+<div class="popDel">
+    <span>确定要删除该数据点？</span>
+    <p>
+        <input type="button" value="返回" class="SmallInput" style="background:#B5B5B5;margin-right:20px;" title="返回" onclick="closePop()"/>
+        <input type="button" value="确定"onclick="delDataTrue()"  class="SmallInput" title="确定" style="background:#2F8BE6;"/>
+    </p>
+
+</div>
+<script>
+    $(function(){
+
+        //初始化加载该产品数据点列表
+        onload();
+        $("textarea").bind('input propertychange', function() {
+            $("#spanText").html($(this).val().length+"/300");
+        });
+
+        $("input[type=text],select,textarea").focus(function(event) {
+            /* Act on the event */
+            $(this).css("background","#fff")
+        });
+        if($(window).width()<1600){
+            $(".popBox").css("width","40%")
+        }
+        var isflag=false;
+        var input = document.createElement('input');
+        if("placeholder" in input){
+            // alert("支持")
+            isflag=true;
+        }else{
+            // alert("不支持")
+            isflag=false;
+            JPlaceHolder.init();
+            $(".spanTextInput").css("top","8px");
+            $(".spanTextInput").hide();
+        }
+        $("#form").Validform({
+            datatype:{
+                "*1-20":/^[a-zA-Z][0-9a-zA-Z_]{0,20}$/,
+                "empty": /^\s*$/
+            },
+            tiptype:function(msg,o,cssctl){
+                if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                    if(isflag){
+                        var objtip=o.obj.siblings(".Validform_checktip").show();
+                    }else{
+                        var objtip=o.obj.parent().siblings(".Validform_checktip").show();
+                    }
+                    cssctl(objtip,o.type);
+                    objtip.text(msg);
+                    $(".Validform_right").text("")
+                }
+            },
+            showAllError:false,
+            ignoreHidden:true,
+            beforeSubmit:function(form){
+                var param=tools.formToJson($("#form"));
+                param["productionId"]=$("#productKey").val();
+                var url;
+                //添加数据点
+                if($(".addInfo").val()=="添加"){
+                    url=api.addDataPoint;
+                    delete param["sid"];
+                    param["customerId"]=getCookie("customerId");
+                    param["decimalDigit"] ? param["decimalDigit"]=param["decimalDigit"]:param["decimalDigit"]="";
+                }else if($(".addInfo").val()=="修改"){
+                    url=api.updateDataPoint;
+                }
+                // console.log(param)
+                getDataTwo(url,param,"post",true,function(json){
+                    // console.log(json)
+                    if(json.rtState){
+                        // closePop();
+                        top.$.jBox.tip(json.rtMsg+"，《数据点配置文件》已更新，请在MCU开发页面下载","success",{
+                            timeout:2000,
+                            closed:function(){
+                                $(".w-center").load("dataCon/dataCon.html?"+Math.random());
+                            }
+                        });
+                    }else{
+                        top.$.jBox.tip(json.rtMsg,"error",{
+                            timeout:500,
+                            closed:function(){
+                                if(json.rtMsg=="表示名已存在" || json.rtMsg=="表示名已存在，不能使用"){
+                                    $("#fieldName").addClass('Validform_error');
+                                    $(".Validform_checktip_fielname").addClass('Validform_wrong').text(json.rtMsg);
+                                }
+                                if(json.statusCode==911){
+                                    window.location.href="../../components/login/index.html"
+                                }
+                            }
+                        });
+                    }
+                })
+                return false;
+            }
+        });
+
+
+        //tip 提示
+        $(".addTextImg").tooltip({
+             position: 'right',
+            content: '<p style="color:#fff;width:200px;">数据点是一套智云服设备协议，用于描述设备功能及参数</p>'
+        });
+
+        $(".biaoShi").tooltip({
+            position: 'bottom',
+            content: '<p style="color:#fff;width:200px;">数据点及其参数传输时的变量名，支持数字、字母、下划线，以字母开头</p>'
+        });
+        $(".readyW").tooltip({
+            position: 'bottom',
+            content: '<p style="color:#fff;width:200px;">只读类型：用于设备状态信息的查询或主动上报<br/>科协类型：接受外部写操作以改变、控制设备状态<br/>报警类型：当设备发生指定的状态改变或达到指定值时，上报报警信号<br/>故障类型：当设备发生指定的状态改变或达到指定值时，上报故障信号</p>'
+        });
+        $(".dataL").tooltip({
+            position: 'bottom',
+            content: '<p style="color:#fff;width:200px;">布尔型：值为正确或错误<br/数值型：用于可线性调节类型数据<br/>枚举型：自定义的有限集合集<br/>扩展型：二进制字符，可用于自定义数值类型或接入扩展元器件</p>'
+        });
+
+    })
+
+//添加或修改数据点提交
+function addInfo(){
+    // alert();
+    $("#form").submit();
+}
+
+//初始化根据产品sid查找产品信息 判断是否发布未发布 以及获取productKey
+function onload(){
+    var sid = $("#productSid").val();
+    var param ={
+        "sid":sid
+    }
+    getDataTwo(api.getProductBySid,param,"post",true,function(json){
+        // console.log(json)
+        if(json.rtState){
+            $("#productStatus").val(json.rtData.productStatus);
+            $("#productKey").val(json.rtData.productKey);
+            getDatalist();
+        }
+
+    })
+}
+//初始化获取参数 进行列表渲染 分页
+function getDatalist(){
+    var param1={
+        "productId":$("#productKey").val(),
+        "pageSize": 15,
+        "pageNum": 1
+    }
+    $("#tbody tr").remove();
+    //获取数据点列表
+    getDataTwo(api.getDataPointAll,param1,"post",true,function(json){
+        // console.log(json)
+        if(json.rtData.list.length){
+            $(".dataConNone").hide();
+            $(".dataConList").show();
+            datalist(json.rtData.list);
+            var visiblePages = 5;
+            var total = 1;
+            if(json.rtData.total/15 < 5) {
+                if(json.rtData.total%15 > 0){
+                    total = json.rtData.total/15 +1;
+                    visiblePages = json.rtData.total/15 + 1;
+                }else {
+                    total = json.rtData.total/15;
+                    visiblePages = json.rtData.total/15;
+                }
+            }
+            $('#pagination').empty();
+            $('#pagination').removeData("twbs-pagination");
+            $('#pagination').unbind("page");
+            $('#pagination').twbsPagination({
+                totalPages: total,
+                visiblePages: visiblePages
+            }).on('page', function(event, page) {
+                // console.log(page);
+                var parama={
+                    "productId":$("#productKey").val(),
+                    "pageSize": 15,
+                    "pageNum": page
+                }
+                getDataTwo(api.getDataPointAll, parama, "post", true, function(json) {
+
+                    $("#tbody tr").remove();
+                    datalist(json.rtData.list);
+                })
+            })
+        }else if(json.rtData.list.length<1){
+            $(".dataConNone").show();
+            $(".dataConList").hide();
+            $('#pagination').empty();
+            $('#pagination').removeData("twbs-pagination");
+            $('#pagination').unbind("page");
+        }
+    });
+}
+
+//table 列表
+function datalist(data){
+        // $("#tbody").remove(tr);
+        var tr;
+        for(var i=0;i<data.length;i++){
+            var obj=data[i];
+            // console.log(obj)
+            if(obj.rwType==0){
+                obj.rwType="可写";
+            }else if(obj.rwType==1){
+                obj.rwType="只读"
+            }else if(obj.rwType==2){
+                obj.rwType="故障"
+            }else if(obj.rwType==3){
+                obj.rwType="报警"
+            }
+
+            if(obj.fieldType=="BOOL"){
+                obj.fieldType="布尔值"
+            }else if(obj.fieldType=="NUMBER"){
+                obj.fieldType="数值型"
+            }else if(obj.fieldType=="STRING"){
+                obj.fieldType="字符串"
+            }else if(obj.fieldType=="RAW"){
+                obj.fieldType="扩展型"
+            }
+
+            tr="<tr><td>"+obj.displayName+"</td>"
+            +"<td>"+obj.fieldName+"</td>"
+            +"<td>"+obj.rwType+"</td>"
+            +"<td>"+obj.fieldType+"</td>"
+            +"<td>"+obj.dataLength+"</td>"
+            +"<td>"+obj.fieldUnit+"</td>"
+            +"<td>"+obj.decimalDigit+"</td>"
+            +"<td style='width:200px;text-align:center;'><div class='nowrap'>"+obj.remark+"</div></td>"
+            +"<td><img src=\"../../imgs/cloud/proEditer.png\" style=\"margin-right:20px;\" alt=\"修改\" title=\"修改\" onclick=\"editerData("+obj.sid+")\">"
+            +"<img src=\"../../imgs/cloud/dataConDel.png\" alt=\"删除\" title=\"删除\" onclick=\"delData("+obj.sid+")\"></td></tr>";
+            $("#tbody").append(tr);
+        }
+}
+</script>

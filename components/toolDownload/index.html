@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <title>智云服-下载中心</title>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <!-- <link rel="stylesheet" href="./index.css"> -->
+    <style>
+        html,body{
+            width: 100%;
+            min-width: 1200px;
+        }
+        .y-beforeDiandian:before{
+            content: "●";
+            color: #2f8be6;
+            margin-right: 16px;
+        }
+        .y-beforeDiandian{
+            border-bottom: 1px solid #999;
+        }
+        .y-beforeDiandian:hover{
+            border: 0;
+            box-shadow: 0 0 20px #efefef;
+        }
+    </style>
+    <link rel="stylesheet" href="../fromBeginningToEnd/fromBeginningToEnd.css">
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+    <script src="../../resource/jquery/jquery-1.8.3.js"></script>
+    <script src="../../resource/cookie/cookie.js"></script>
+    <script src="../../resource/js/getHeaderAndBottom.js"></script>
+    <script src="../../resource/js/api.js"></script>
+</head>
+<body style="padding-top: 60px;">
+    <div id="titles" style="overflow: hidden;height: 0;">toolDownload</div>
+    <!-- header -->
+    <div class="y-documentH"></div>
+    <!-- main -->
+    <div>
+        <div style="position: relative;margin-bottom: 110px;">
+            <img src="./img/1.png" alt="" style="display: block;width: 100%;">
+            <p style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;font-size: 35px;height: 35px;line-height: 35px;color: #fff;text-align: center;">————&nbsp;SDK下载&nbsp;————</p>
+        </div>
+        <div style="width: 1200px;margin: 0 auto;margin-bottom: 220px;overflow: hidden;padding: 20px 0;">
+            <div style="float: left;width: 300px;margin: 0 50px 60px 50px;;height: 52px;line-height: 52px;padding: 0 10px;" class="y-beforeDiandian">
+                <span>App&nbsp;SDK</span>
+                <a href="javascript:void(0);" style="width: 22px;height: 22px;float: right;margin-top: 15px;" class="appSdk">
+                    <img src="./img/2.png" alt="" style="display: block;width: 22px;height: 22px;">
+                </a>
+            </div>
+            <div style="float: left;width: 300px;margin: 0 50px 60px 50px;;height: 52px;line-height: 52px;padding: 0 10px;" class="y-beforeDiandian">
+                <span>模块&nbsp;SDK</span>
+                <a href="javascript:void(0);" style="width: 22px;height: 22px;float: right;margin-top: 15px;" class="modeSdk">
+                    <img src="./img/2.png" alt="" style="display: block;width: 22px;height: 22px;">
+                </a>
+            </div>
+            <div style="float: left;width: 300px;margin: 0 50px 60px 50px;;height: 52px;line-height: 52px;padding: 0 10px;" class="y-beforeDiandian">
+                <span>调试工具（Demo&nbsp;App）</span>
+                <a href="javascript:void(0);" style="width: 22px;height: 22px;float: right;margin-top: 15px;" class="demoSdk">
+                    <img src="./img/2.png" alt="" style="display: block;width: 22px;height: 22px;">
+                </a>
+            </div>
+            <div style="float: left;width: 300px;margin: 0 50px 60px 50px;;height: 52px;line-height: 52px;padding: 0 10px;" class="y-beforeDiandian">
+                <span>web&nbsp;API</span>
+                <a href="javascript:void(0);" style="width: 22px;height: 22px;float: right;margin-top: 15px;">
+                    <img src="./img/2.png" alt="" style="display: block;width: 22px;height: 22px;">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div style="text-align: center;line-height: 60px;margin-top: 100px;cursor: pointer;color: #666;font-size: 14px;"><span onclick="goIndex()" style="margin-right: 20px;">智云服首页</span> | <span onclick="goDocumentC()" style="margin-left: 20px;">文档中心</span></div>
+    <script>
+        $(function () {
+            getData(api.getToolsDownload,{
+                "type": "App SDK"
+            }, "", true, function (data) {
+                // console.log(data);
+                if(data.rtState) {
+                    $(".appSdk").attr("href", ""+ip+"/cms/attachController/download?attachPath="+data.rtData+"");
+                }
+            });
+            getData(api.getToolsDownload,{
+                "type": "模块 SDK"
+            }, "", true, function (data) {
+                // console.log(data);
+                if(data.rtState) {
+                    $(".modeSdk").attr("href", ""+ip+"/cms/attachController/download?attachPath="+data.rtData+"");
+                }
+            });
+            getData(api.getToolsDownload,{
+                "type": "Demo App"
+            }, "", true, function (data) {
+                // console.log(data);
+                if(data.rtState) {
+                    $(".demoSdk").attr("href", ""+ip+"/cms/attachController/download?attachPath="+data.rtData+"");
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<link rel="stylesheet" href="index.css">
+<style>
+    .BigInput{
+        width:50px;
+        height:40px;
+        line-height: 40px;
+    }
+    #spanText1{
+        /*position:absolute;
+        right:20%;
+        top:134px;
+        z-index: 999;*/
+        display: inline-block;
+        width:76%;
+        text-align: right;
+    }
+</style>
+<div class="addProductContent" style="height:auto;">
+    <div class="addText">产品信息
+        <ul class="InfoImg">
+            <li><img src="../../imgs/cloud/productOnload.png" alt="" title="发布" onclick="launchPro()"/></li>
+            <li><img src="../../imgs/cloud/proEditer.png" alt="" onclick="editerInfo()" title="修改"></li>
+            <li><img src="../../imgs/cloud/proDel.png" alt="" onclick="delInfo()" title="删除"></li>
+        </ul>
+    </div>
+    <div class="infoTable">
+        <form id="form">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="frist" style="position:relative;">
+                    <span>产品名称</span>
+                    <p>
+                    <span id="productName" name="productName" style="line-height: 30px;"></span>
+                    <input type="text" class="BigInput" id="productName1" datatype="*" style="width:60%;height:40px;line-height:40px;display:none;" nullmsg="请填写产品名称" maxlength="30" autocomplete="off"/>
+                    </p>
+                    <div class="Validform_checktip" style="position:absolute;top:92px;"></div>
+                </td>
+                <td>
+                    <span>产品类型</span>
+                    <p><select name="productType" disabled="true" id="productType" class="BigInput" style="font-size:14px;padding:10px 8px;width:50%;height:40px;">
+                        <option value="智能家居">智能家居</option>
+                        <option value="智慧医疗">智慧医疗</option>
+                        <option value="可穿戴设备">可穿戴设备</option>
+                        <option value="智慧城市">智慧城市</option>
+                        <option value="工业设备">工业设备</option>
+                        <option value="农林业生态">农林业生态</option>
+                        <option value="其他">其他</option>
+                    </select></p>
+                </td>
+            </tr>
+            <tr>
+                <td class="frist">
+                    <span>产品型号</span>
+                    <p><span id='productModel' name="productModel" style="line-height: 30px;"></span><input type="text" id="productModel1" class="BigInput" style="width:60%;height:40px;line-height:40px;display:none;" maxlength="30" autocomplete="off"/></p>
+                </td>
+                <td>
+                    <span>技术方案</span>
+                    <p><span id="technicalSolution" name="technicalSolution"></span></p>
+                </td>
+            </tr>
+            <tr>
+                <td class="frist">
+                    <span>数据传输方式</span>
+                    <p><span id="dataTransType" name="dataTransType"></span></p>
+                </td>
+                <td>
+                    <span>ProductKey</span>
+                    <p style="position:relative;"><span id="productKey" name="productKey"></span>
+                        &nbsp;&nbsp;<img src="../../imgs/cloud/help.png" alt="" class="ProductKeyImg" data-placement="bottom"  style="cursor:pointer;">
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td class="frist">
+                    <span>修改时间</span>
+                    <p><span id="updateTime" name="updateTime"></span></p>
+                </td>
+                <td>
+                    <span>ProductSecret</span>
+                    <p style="cursor:pointer; position:relative;"><span  id="productSecret" name="productSecret" onclick="showCode()" id="showCode"></span>
+                    &nbsp;&nbsp;<img src="../../imgs/cloud/help.png" alt="" class="ProductSecretImg" data-placement="bottom" title="查看ProductSecret"  style="cursor:pointer;">
+                    </p>
+                </td>
+            </tr>
+            <tr style="position:relative;">
+                <td class="frist" style="position:relative;">
+                    <span style="position:absolute;top:8px;">创建时间</span>
+                    <p style="position:absolute;top:28px;"><span id="createTime" name="createTime" style="height:130px;overflow:hidden;"></span></p>
+                </td>
+                <td style="overflow:hidden;position:relative;">
+                    <span>描述</span>
+                    <p style="margin-top:14px;"><span id="productDesc" style="line-height:30px;height:130px;overflow-y:auto;width:80%;" name="productDesc">无</span>
+                    <textarea  type="area" id="productDesc1"  value="" autocomplete="off" style="height:120px;font-size:14px;line-height:25px;width:80%;display:none;" class="BigInput"  maxlength="300" placeholder="产品描述" autocomplete="off"></textarea >
+                    </p>
+                    <span id="spanText1"></span>
+                </td>
+            </tr>
+            <tr style="margin-top:50px;">
+                <td colspan="2" style="text-align:center;padding-right:20%;">
+                    <input type="submit" id="uploadInfo" class="SmallInput" value="修改" style="width:110px;background:#2F8BE6;padding-left:0;color:#fff;display:none;height:40px;line-height:40px;" />
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</div>
+<!-- 遮罩层 -->
+<div class="popBoxDiv" ></div>
+<!-- 删除产品信息 -->
+<div class="popDel">
+    <span>确定要删除该产品？</span>
+    <p>
+        <input type="button" value="取消" class="SmallInput" style="background:#B5B5B5;margin-right:20px;" title="取消" onclick="closePop()"/>
+        <input type="button" value="确定" class="SmallInput" title="确定" style="background:#2F8BE6;" onclick="uploadPop()"/>
+    </p>
+</div>
+<!--查看码 -->
+<div class="popCode">
+    <p class="first"><span>Product Secret</span>
+        <img class="closePopCode" src="../../imgs/cloud/close.png" alt="" onclick="closePopCode();">
+    </p>
+    <p class="popCodeValue"></p>
+</div>
+<!-- 判断该产品是否发布 0-未发布；1-发布 该隐藏域只存 1 (发布) -->
+<input type="hidden" id="productStatus" name="productStatus" value=""/>
+
+<script>
+    $(function(){
+        $("input[type=text],select,textarea").focus(function(event) {
+            /* Act on the event */
+            $(this).css("background","#fff");
+        });
+
+        onload();
+
+        $("textarea").bind('input propertychange', function() {
+            $("#spanText1").html($(this).val().length+"/300");
+        });
+        //tooltip 信息
+        $(".ProductKeyImg").tooltip({
+            content: '<p style="color:#fff;width:200px;">产品标识码,开发者通过智云服后台创建新产品后,自动生成一个32位字符串。在智云服的数据库是一个唯一的号码，开发者将ProductKey写入设备主控MCU后，智云服通过此标识码对设备进行识别并自动完成注册</p>'
+        });
+        $(".ProductSecretImg").tooltip({
+            position:"bottom",
+            content: '<p style="color:#fff;width:200px;">产品密钥，在生成Productkey的时候云端会对应生成一个Product Secret，该参数为关键性机密参数，不应向第三方泄露。该参数在绑定远程设备（一般为GPRS接入方案）的时候会使用到。</p>'
+        });
+
+        $("#form").Validform({
+            tiptype:function(msg,o,cssctl){
+                if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                    var objtip=o.obj.parent().siblings(".Validform_checktip");
+                    cssctl(objtip,o.type);
+                    objtip.text(msg);
+                    $(".Validform_right").text("")
+                }
+            },
+            showAllError:false,
+            ignoreHidden:true,
+            beforeSubmit:function(form){
+
+                uploadInfo();
+                // $(".w-center").load("productCon/productInfo.html")
+                // alert("1")
+                return false;
+            }
+        });
+    })
+    //加载产品信息
+    function onload(){
+        var sid = $("#productSid").val();
+        var param ={
+            "sid":sid
+        }
+        getDataTwo(api.getProductBySid,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                if(json.rtData.dataTransType==0){
+                    json.rtData.dataTransType="定长"
+                }else if(json.rtData.dataTransType==1){
+                    json.rtData.dataTransType="变长"
+                }else if(json.rtData.dataTransType==null || json.rtData.dataTransType=="null"){
+                    json.rtData.dataTransType="";
+                }
+                if(json.rtData.technicalSolution=="wifi"){
+                    json.rtData.technicalSolution="WIFI";
+                }else if(json.rtData.technicalSolution=="gprs"){
+                    json.rtData.technicalSolution="移动网络";
+                }else if(json.rtData.technicalSolution=="bluetooth"){
+                    json.rtData.technicalSolution="蓝牙";
+                }
+                json.rtData.updateTime=trasSecond(json.rtData.updateTime);
+                json.rtData.createTime=trasSecond(json.rtData.createTime);
+                $(".popCodeValue").text(json.rtData.productSecret);
+                json.rtData.productSecret=substring(json.rtData.productSecret);
+                bindJsonObj2Cntrl(json.rtData);
+                $(".w-content").outerHeight($(".addProductContent").outerHeight()+60+"px")
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+
+        // $(".w-center").outerHeight($(".addProductContent").outerHeight()+"px");
+        // $(".w-content").outerHeight($(".addProductContent").outerHeight()+"px")
+        // console.log($(".addProductContent").outerHeight())
+    }
+
+
+    //修改数据提交
+    function uploadInfo(){
+        var param={
+            "customerAccount":getCookie("customerAccount"),
+            "customerId":getCookie("customerId"),
+            "productName":$("#productName1").val(),
+            "productType":$("#productType").val(),
+            "productModel":$("#productModel1").val(),
+            "sid":$("#productSid").val(),
+            "productDesc":$("#productDesc1").val()
+        }
+        getDataTwo(api.updateProduct,param,'post',true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                top.$.jBox.tip(json.rtMsg,"success",{
+                    timeout:500,
+                    closed:function(){
+                        $("#uploadInfo").hide();
+                        $(".w-center").load("productCon/productInfo.html");
+                        //侧边栏函数列表
+                        getCustomerProduct();
+                    }
+                })
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+    }
+
+    //删除产品信息
+    function delInfo(){
+        if($("#productStatus").val()==1){
+            top.$.jBox.tip("该产品已发布，不可删除","error",{
+                timeout:1000
+            });
+            return false;
+        }
+        $(".popBoxDiv").show();
+        $(".popDel").show();
+    }
+    function uploadPop(){
+        var param ={
+            "sid":$("#productSid").val()
+        }
+        getDataTwo(api.deleteProduct,param,"post",true,function(json){
+            if(json.rtState){
+                top.$.jBox.tip(json.rtMsg,"success",{
+                    timeout:500,
+                    closed:function(){
+                        $(".popBoxDiv").hide();
+                        $(".popDel").hide();
+                        $(".w-center").load("demo1.html");
+                        //侧边栏函数列表
+                        getCustomerProduct();
+                        $("#productSid").val("");
+                    }
+                })
+            }else{
+                top.$.jBox.tip(json.rtMsg,"error",{
+                    timeout:500,
+                    closed:function(){
+                        if(json.statusCode==911){
+                            window.location.href="../../components/login/index.html"
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>

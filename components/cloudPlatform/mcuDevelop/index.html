@@ -1,0 +1,58 @@
+
+<link rel="stylesheet" href="productCon/index.css"/>
+<style>
+    div.addText{
+        padding:20px;
+        width:95%;
+        margin:0 auto;
+        margin-top:30px;
+        border-radius:5px;
+        height:auto;
+    }
+    .addText p{
+        font-weight: 100;
+        font-size: 14px;
+    }
+    div.addText p.two{
+        line-height: 40px;
+    }
+    a{
+        text-decoration: none;
+        color:#2F8BE6;
+    }
+</style>
+<div class="addProductContent" style="height:750px;">
+    <p class="addText">MCU开发</p>
+    <div class="addText" style="" >
+        <p class="frist">配置文件</p>
+        <p class="two">根据您创建的数据点，智云服为您动态生成了配置文件，下载该配置文件和模块SDK包，并将该配置文件放置在SDK对应的路径下（SDK下载包会有详细说明）。</p>
+        <p class="three">点击下载《<a id="dataMcu" >数据点配置文件</a>》或《<a id="modeSdk">模块SDK</a>》。</p>
+    </div>
+</div>
+<script>
+    $(function(){
+        mcuList();
+    })
+
+    function mcuList(){
+        var param={
+            "productId":$("#product_key").val()
+        }
+        getDataTwo(api.getZipFieldPath,param,"post",true,function(json){
+            // console.log(json)
+            if(json.rtState){
+                var src= api.mcuDownload+json.rtData;
+                $("#dataMcu").attr("href",src);
+
+            }
+        });
+        getData(api.getToolsDownload,{
+            "type": "模块 SDK"
+        }, "", true, function (data) {
+            // console.log(data);
+            if(data.rtState) {
+                $("#modeSdk").attr("href", ""+ip+"/cms/attachController/download?attachPath="+data.rtData+"");
+            }
+        });
+    }
+</script>

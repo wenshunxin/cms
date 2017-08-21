@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <title>智云服</title>
+    <link rel="stylesheet" href="../../css/reset.css"/>
+    <!-- <link rel="stylesheet" href="../../css/common.css"/> -->
+    <link rel="stylesheet" href="../../components/fromBeginningToEnd/fromBeginningToEnd.css" />
+    <link rel="stylesheet" href="../../resource/jBox/Skins/Blue/jbox.css"/>
+    <link rel="stylesheet" href="../../resource/validform/style.css"/>
+    <link rel="stylesheet" href="index.css"/>
+    <style>
+        .contentHeader{
+            height:65px;
+            line-height: 65px;
+            border-bottom: 2px solid #efefef;
+            width:96%;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-bottom: 55px;
+        }
+        .contentHeader span{
+            font-size: 20px;
+            color:#333;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <div  class="y-header-box">
+        <div class="y-header"></div>
+    </div>
+    <div class="content" style="min-height:656px;">
+        <div class="contentBox">
+            <div class="contentHeader">
+                <span>修改密码</span>
+                <span style="float:right;font-size:16px;"><a style="text-decoration: none;color:#2F8BE6;" href="../personalInfo/index.html" title="返回用户信息">返回用户信息</a></span>
+            </div>
+            <div class="contentForm">
+                <form id="form">
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td class="rdTop"><label><span>*</span>旧密码</label></td>
+                            <td>
+                                <input type="password" value="" autocomplete="off" name="oldPass" id="oldPass" class="BigInput" datatype="s6-18" errormsg="请填写长度为6-18位密码"  nullmsg="请填写旧密码"  placeholder="旧密码"/>
+                                <div class="Validform_checktip  Validform_checktip_oldPass" style="margin-left:3%;"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rdTop"><label><span>*</span>新密码</label></td>
+                            <td>
+                                <input type="password" value="" autocomplete="off" name="newPass" id="newPass" class="BigInput" datatype="*6-18"  nullmsg="请填写新密码"   errormsg="请填写长度为6-18位密码"  placeholder="新密码"/>
+                                <div class="Validform_checktip" style="margin-left:3%;"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rdTop"><label><span>*</span>确认密码</label></td>
+                            <td>
+                                <input type="password" value="" autocomplete="off" name="customerName" id="customerName" class="BigInput" datatype="*" recheck="newPass" nullmsg="请再填写一次密码" placeholder="确认新密码" errormsg="两次填写的密码不一致"/>
+                                <div class="Validform_checktip" style="margin-left:3%;"></div></td>
+                        </tr>
+                    </table>
+
+                    <div class="item" style="width:128px;margin:30px auto 100px;">
+                        <input type="button" class="BigInput" title="提交" style="cursor:pointer;padding:0;height:42px;line-height:42px;"  onclick="handleBtn()" value="提交" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="y-bottom"></div>
+    <script type="text/javascript" src="../../resource/jquery/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../../resource/js/getHeaderAndBottom.js"></script>
+    <script type="text/javascript" src="../../resource/cookie/cookie.js"></script>
+    <script type="text/javascript" src="../../resource/js/tools.js"></script>
+    <script type="text/javascript" src="../../resource/validform/Validform_v5.3.2.js"></script>
+    <script type="text/javascript" src="../../resource/js/api.js"> </script>
+    <script type="text/javascript" src="../../resource/jBox/jquery.jBox-2.3.min.js"></script>
+    <script type="text/javascript" src="../../resource/jquery/jQuery.XDomainRequest.js"></script>
+    <script>
+        $(function(){
+            // JPlaceHolder.init(); ie低版本支持placeholder
+            var isflag=false;
+            var input = document.createElement('input');
+            if("placeholder" in input){
+                // alert("支持")
+                isflag=true;
+            }else{
+                // alert("不支持")
+                isflag=false;
+                JPlaceHolder.init();
+                $(".divParent span").css("left","18px")
+            }
+            // input获得焦点时候背景颜色变成白色
+            $("input,textarea").focus(function() {
+                /* Act on the event */
+                $(this).css("background","#fff");
+                $("input[type=button]").css("background","#2F8BE6");
+            });
+
+            //获取客户sid
+            var sid = getCookie("customerId");
+            $("#form").Validform({
+        		tiptype:function(msg,o,cssctl){
+        			if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                        if(isflag){
+                            var objtip=o.obj.siblings(".Validform_checktip").show();
+                        }else{
+                            var objtip=o.obj.parent().siblings(".Validform_checktip").show();
+                        }
+                        // objtip.parent().height("80")
+        				cssctl(objtip,o.type);
+        				objtip.text(msg);
+                        $(".Validform_right").text("");
+        			}
+        		},
+                showAllError:false,
+                beforeSubmit:function(form){
+                    var sid = getCookie("customerId");
+                    if(sid==null || sid =="null"){
+                        top.$.jBox.tip("请先登录","error",{
+                            timeout:500,
+                            closed:function(){
+                                window.location.href="../login/index.html";
+
+                            }
+                        })
+                        return false;
+                    }
+                    var param={
+                        "oldPass":$("#oldPass").val(),
+                        "newPass":$("#newPass").val(),
+                        "sid":sid
+                    }
+                    // console.log(param)
+                    getData(api.handleChangePass,param,"post",true,function(json){
+                        if(json.rtState){
+                            top.$.jBox.tip(json.rtMsg,"success",{
+                                timeout:500,
+                                closed:function(){
+                                    window.location.href="../login/index.html";
+                                    delCookie("customerPassword","",-1);//删除密码
+                                    delCookie("token","",-1);//删除token
+                                    delCookie("customerId","",-1);//删除客户sid
+                                    delCookie("customerName","",-1);//删除用户姓名
+                                    delCookie("customerAccount","",-1);
+                                }
+                            });
+                        }else{
+                            top.$.jBox.tip(json.rtMsg,"error");
+                        }
+                    });
+                    return false;
+                }
+        	});
+        })
+
+        //数据提交
+        function handleBtn(){
+            $("#form").submit();
+        }
+    </script>
+</body>
+</html>

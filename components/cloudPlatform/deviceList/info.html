@@ -1,0 +1,241 @@
+<style>
+    .tablemain table td,
+    .tablemain table th {
+        text-align: center;
+        width: 25%;
+        display: inline-block;
+        overflow: hidden;
+        word-break: break-all;
+        float: left;
+    }
+    .tablemain table th {
+        line-height: 44px;
+        background: #f0f0f0;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .tablemain table td {
+        line-height: 34px;
+        color: #666;
+        font-size: 14px;
+    }
+</style>
+</head>
+
+<div class="y-virtualDev-main" style="width: 100%;border: 1px solid #efefef;border-radius: 4px;overflow: hidden;margin: 20px 0 0 0;margin-bottom: 60px;">
+    <div style="line-height: 50px;background: #f0f0f0;padding-left: 20px;font-size: 16px;">
+        <strong>设备列表</strong>
+    </div>
+    <div style="height: 68px;padding: 17px 22px;line-height: 34px;overflow: hidden;">
+        <div style="float: left;">
+            <span style="color: #666;">设备ID：</span>
+            <span style="color: #333;" class="deviceId">7618D988363BD0B4</span>
+        </div>
+        <div style="float: right;">
+            <span style="color: #666;">设备用户：</span>
+            <span style="color: #333;" class="userPhone">18726535485</span>
+        </div>
+    </div>
+    <!-- 搜索 -->
+    <div style="height: 68px;padding: 17px 22px;overflow: hidden;">
+        <div style="float: left;margin-right: 20px;">
+            <span>日志类型</span>
+            <select name="" id="type" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 128px;">
+                            <option value="全部">全部</option>
+                            <option value="设备状态">设备状态</option>
+                            <option value="上报数据">上报数据</option>
+                            <option value="下发数据">下发数据</option>
+                        </select>
+        </div>
+        <div style="float: left;margin-right: 20px;">
+            <span>操作结果</span>
+            <select name="" id="result" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 128px;">
+                            <option value="全部">全部</option>
+                            <option value="成功">成功</option>
+                            <option value="失败">失败</option>
+                        </select>
+        </div>
+        <div style="float: left;">
+            <input type="text" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 200px;" class="laydate-icon" id="startTime">
+            <input type="text" style="height: 34px;border: 1px solid #efefef;border-radius: 2px;color: #666;width: 200px;" class="laydate-icon" id="endTime" readonly>
+        </div>
+        <img src="deviceList/ss.png" alt="" style="width: 34px;height: 34px;padding: 6px;border: 1px solid #efefef;float: left;" onclick="infosousuo()">
+    </div>
+    <!-- 表格 -->
+    <div style="width: 100%;padding: 0 12px;" class="tablemain">
+        <table  width="100%">
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>日志类型</th>
+                    <th>操作内容</th>
+                    <th>操作结果</th>
+                </tr>
+            </thead>
+            <tbody class="tbodys">
+            </tbody>
+        </table>
+        <div class="text-center" style="text-align: right;margin: 40px 0 20px 0;">
+            <ul id="pagination" class="pagination"></ul>
+        </div>
+    </div>
+</div>
+<!-- </div>
+    </div> -->
+<script src="./jquery.twbsPagination.js"></script>
+
+<script>
+    $(function() {
+        // 时间段
+        var startTime = {
+            elem: '#startTime',
+            format: 'YYYY-MM-DD hh:mm:ss',
+            istime: true,
+            istoday: false,
+            choose: function(datas) {
+                endTime.min = datas; //开始日选好后，重置结束日的最小日期
+                endTime.startTime = datas //将结束日的初始值设定为开始日
+                laydate(endTime);
+            }
+        };
+        var endTime = {
+            elem: '#endTime',
+            format: 'YYYY-MM-DD hh:mm:ss',
+            min: laydate.now(),
+            istime: true,
+            istoday: false,
+            choose: function(datas) {
+
+            }
+        };
+        laydate(startTime);
+        $('#startTime').val(laydate.now(-7, 'YYYY-MM-DD hh:mm:ss'));
+        $('#endTime').val(laydate.now(-0, 'YYYY-MM-DD hh:mm:ss'));
+
+        getEquipmentLog();
+        $(".deviceId").text($("#deviceId").val());
+        $(".userPhone").text($("#userPhone").val());
+    })
+    // 设备日志列表
+    function getEquipmentLog() {
+        getDataTwo(api.getEquipmentLog, {
+            "sid": $("#sid").val(),
+            "pageSize": 15,
+            "pageNum": 1
+        }, "", true, function(data) {
+            // console.log(data);
+            if(data.rows && data.rows.length) {
+                    infopages(data.rows);
+                    var visiblePages = 5;
+                    var total = 1;
+                    if(data.total/15 < 5) {
+                        if(data.total%15 > 0){
+                            total = data.total/15 +1;
+                            visiblePages = data.total/15 + 1;
+                        }else {
+                            total = data.total/15;
+                            visiblePages = data.total/15;
+                        }
+                    }
+                    $('#pagination').empty();
+                    $('#pagination').removeData("twbs-pagination");
+                    $('#pagination').unbind("page");
+                    $('#pagination').twbsPagination({
+                        totalPages: total,
+                        visiblePages: visiblePages
+                    }).on('page', function(event, page) {
+                        getDataTwo(api.getEquipmentLog, {
+                            "sid": $("#sid").val(),
+                            "pageSize": 15,
+                            "pageNum": page
+                        }, "", true, function(data) {
+                            infopages(data.rows);
+                        })
+                    })
+            }else {
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+                $(".tbodys").html("<tr><td colspan='4' style='width: 100%'>暂无日志</td></tr>");
+            }
+        })
+    }
+    // 搜索
+    function infosousuo() {
+        getDataTwo(api.getEquipmentLog, {
+            "sid": $("#sid").val(),
+            "pageSize": 15,
+            "pageNum": 1,
+            "type": $("#type").val(),
+            "result": $("#result").val(),
+            "startTime": $("#startTime").val(),
+            "endTime": $("#endTime").val()
+        }, "", true, function(data) {
+            // console.log(data);
+            if(data.rows && data.rows.length) {
+                    infopages(data.rows);
+                    var visiblePages = 5;
+                    var total = 1;
+                    if(data.total/15 < 5) {
+                        if(data.total%15 > 0){
+                            total = data.total/15 +1;
+                            visiblePages = data.total/15 + 1;
+                        }else {
+                            total = data.total/15;
+                            visiblePages = data.total/15;
+                        }
+                    }
+                    $('#pagination').empty();
+                    $('#pagination').removeData("twbs-pagination");
+                    $('#pagination').unbind("page");
+                    $('#pagination').twbsPagination({
+                        totalPages: total,
+                        visiblePages: visiblePages
+                    }).on('page', function(event, page) {
+                        getDataTwo(api.getEquipmentLog, {
+                            "sid": $("#sid").val(),
+                            "pageSize": 15,
+                            "pageNum": page,
+                            "type": $("#type").val(),
+                            "result": $("#result").val(),
+                            "startTime": $("#startTime").val(),
+                            "endTime": $("#endTime").val()
+                        }, "", true, function(data) {
+                            infopages(data.rows);
+                        })
+                    })
+            }else {
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+                $(".tbodys").html("<tr><td colspan='4' style='width: 100%'>暂无日志</td></tr>");
+            }
+        })
+    }
+    // demo拼接的字符串
+    function infopages(data) {
+        var tr="";
+        $.each(data, function (k, v) {
+            // console.log(v);
+            tr += "<tr>"
+            + "<td>"+zhrq(v.operateTime)+"</td>"
+            + "<td>"+v.operateType+"</td>"
+            + "<td>"+v.remark+"</td>"
+            + "<td>"+v.operateResult+"</td>"
+            + "</tr>"
+        })
+        $(".tbodys").html(tr);
+        $(".tbodys>tr").on("mouseover", function () {
+          $(this).css("background", "#f0f0f0");
+        }).on("mouseout", function () {
+          $(this).css("background", "#fff");
+        });
+        $(".w-content").outerHeight($(".w-center").outerHeight() + "px");
+    }
+
+
+</script>
+<!-- </body>
+
+</html> -->

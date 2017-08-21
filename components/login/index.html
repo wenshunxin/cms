@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <title>智云服</title>
+    <link rel="stylesheet" href="../../css/reset.css"/>
+    <link rel="stylesheet" href="../../resource/validform/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../../css/common.css"/>
+    <link rel="stylesheet" href="../../resource/jBox/Skins/Blue/jbox.css"/>
+    <style>
+        html,body{
+            height:100%;
+        }
+        .getHandle{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onkeydown="keylogin(event)">
+<div class="w-header">
+    <div style="float:left">
+        <a href="../../index.html"><img src="../../imgs/logo-small.png" alt="智云服logo" title="智云服" style='vertical-align:middle;'></a>
+    </div>
+    <a class="goIndex" title="返回智云服首页" href="../../index.html">返回首页</a>
+</div>
+<div class='w-contentt'>
+    <div class="w-content" style="margin-left:-180px;">
+        <form id="form" >
+                <h2 >用户登录</h2>
+            	<div class="item">
+                    	<input type="text" value="" autocomplete="off" name="customerAccount" id="customerAccount" class="BigInput" datatype="m | e" errormsg="请填写正确的手机号或者邮箱" nullmsg="请填写手机号或者邮箱"  placeholder="手机号/邮箱"/>
+                        <div class="Validform_checktip"></div>
+                </div>
+                <div class="item">
+                    	<input type="password" autocomplete="off" value="" name="customerPassword" id="customerPassword" class="BigInput"  datatype="*6-18" nullmsg="请填写密码" errormsg="密码范围在6~18位之间" placeholder="密码"/>
+                        <div class="Validform_checktip"></div>
+                </div>
+                <div class="item" style="height:40px;">
+                	<label for="getUser" style="font-size:14px;color:#666;font-family:'Microsoft YaHei';cursor:pointer;" title="记住密码"><input name="getUser" id="getUser" type="checkbox" value=""  />记住密码</label>
+                    <span style="float:right;"><a title="忘记密码" style="font-size:14px;color:#666;font-family:'Microsoft YaHei'; cursor:pointer;" href="../resetPass/index.html">忘记密码？</a></span>
+                </div>
+                <div class="item" style="text-align:center;">
+                	<input type="button"  class="BigInput getHandle" title="登录"  value="登  录" onclick="handleLogin()"/>
+                </div>
+                <div style="text-align:center;height:50px;">
+                    <span style="width:100%;font-size:14px;"><a title="新用户注册" style="color:#2F8BE6;" href="../register/index.html">新用户注册</a></span>
+                </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="../../resource/jquery/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../../resource/validform/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="../../resource/js/tools.js"></script>
+<script type="text/javascript" src="../../resource/jBox/jquery.jBox-2.3.min.js"></script>
+<script type="text/javascript" src="../../resource/jBox/i18n/jquery.jBox-zh-CN.js"></script>
+<script type="text/javascript" src="../../resource/js/api.js"></script>
+<script type="text/javascript" src="../../resource/jquery/jQuery.XDomainRequest.js"></script>
+<script type="text/javascript" >
+$(function(){
+    var checked=getCookie("getUser");
+    if(checked){
+        $("#getUser").attr("checked",true)
+        var userName=getCookie("customerAccount1");
+        var password=getCookie("customerPassword");
+        if (userName!=null && userName!="null") {
+    		$("#customerAccount").val(userName);
+
+        }
+        if(password!=null && password!="null"){
+            $("#customerPassword").val(password);
+        }
+    }
+    // JPlaceHolder.init(); ie低版本支持placeholder
+    // alert($("#customerPassword").val())
+    var isflag=false;
+    var input = document.createElement('input');
+    if("placeholder" in input){
+        // alert("支持")
+        isflag=true;
+    }else{
+        // alert("不支持")
+        isflag=false;
+        JPlaceHolder.init();
+        var getUser=getCookie("getUser");
+        if(getUser==null&&getUser=="null"){
+            $("span.spanTextInput").hide();
+        }
+        $("#form input:not(input[type=button])").each(function(i){
+            // console.log(i)
+            if($(this).eq(i).val()!=""){
+                $(this).eq(i).siblings('span.spanTextInput').remove();
+            }
+            if($("#customerPassword").val()!=""){
+                $("#customerPassword").siblings('span').remove();
+            }
+        })
+    }
+    // input获得焦点时候背景颜色变成白色
+    $("input").focus(function() {
+        /* Act on the event */
+        $(this).css("background","#fff");
+        $("input[type=button]").css("background","#2F8BE6")
+    })
+    //判断是否师记住密码账号
+
+    //表单数据验证 提交
+    $("#form").Validform({
+		tiptype:function(msg,o,cssctl){
+			if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+                if(isflag){
+                    var objtip=o.obj.siblings(".Validform_checktip").show();
+                }else{
+                    var objtip=o.obj.parent().siblings(".Validform_checktip").show();
+                }
+                // objtip.parent().height("80")
+				cssctl(objtip,o.type);
+				objtip.text(msg);
+                $(".Validform_right").text("")
+			}
+		},
+        showAllError:false,
+        beforeSubmit:function(form){
+            var param={
+                "customerAccount":$("#customerAccount").val(),
+                "customerPassword":$("#customerPassword").val()
+            }
+            // console.log(param)
+            getData(api.handleLogin,param,"post",true,function(json){
+                // console.log(json)
+                // alert();
+                if(json.rtState){
+                    top.$.jBox.tip(json.rtMsg,"success",{
+                        timeout:500,
+                        closed:function(){
+                            if(json.rtData.code){
+                                window.location.href="../personalInfo/index.html";
+                                setCookie("firstLogon",1,1)
+                            }else{
+                                window.location.href="goIndex.html";
+                            }
+                        }
+                    });
+                    var token=json.rtData.cookie.value;
+                    // console.log(token)
+                    // 提交成功后 把账号密码存cookie
+                    setCookie("token",json.rtData.cookie.value,10);//存储token
+                    setCookie("customerName",json.rtData.customerInfo.customerName,10);//用户姓名
+                    setCookie("customerId",json.rtData.customerInfo.sid,10);//客户sid
+                    setCookie('customerAccount',json.rtData.customerInfo.customerAccount,10);//客户账号
+                    if($('#getUser').is(':checked')) {
+                        setCookie("customerPassword",param.customerPassword,10);
+                        setCookie('customerAccount1',json.rtData.customerInfo.customerAccount,10);//
+                        setCookie("getUser",true,10);
+                    }else{
+                        delCookie("customerPassword","",-1);
+                        delCookie("getUser","",-1);
+                        delCookie("customerAccount1","",-1)
+                    }
+                }else{
+                    top.$.jBox.tip(json.rtMsg,"error",{
+                        timeout:1000
+                    });
+                }
+            });
+            return false;
+        }
+	});
+    getHeight();
+    if($(window).height()<650){
+        $(".w-content").css("top",57+"%")
+    }
+})
+//改变窗口获得高度
+window.onresize = function(){
+    getHeight()
+}
+//获得背景图片的高度
+function getHeight(){
+    var height=document.body.clientHeight-60;
+    $(".w-contentt").height(height+"px")
+}
+//提交数据
+function handleLogin(){
+    $("#form").submit();
+}
+
+function keylogin(event) {
+	if(event.keyCode == 13 || event.which == 13){
+		handleLogin();
+	}
+}
+</script>
+</body>
+</html>

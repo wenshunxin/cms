@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="../../imgs/logo.ico">
+    <title>智云服云平台</title>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../components/fromBeginningToEnd/fromBeginningToEnd.css" />
+    <!-- <link rel="stylesheet" href="../../resource/bootstrap/bootstrap.css"> -->
+    <link rel="stylesheet" href="../../resource/easyui/tooltip.css">
+    <link rel="stylesheet" href="../../resource/jBox/Skins/Blue/jbox.css">
+    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="productCon/index.css">
+    <link rel="stylesheet" href="../../resource/validform/style.css">
+    <link rel="stylesheet" href="dataCon/index.css">
+    <link rel="stylesheet" href="./twbsPagination.css">
+    <script type="text/javascript" src="../../resource/jquery/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="../../resource/js/getHeaderAndBottom.js"></script>
+    <script type="text/javascript" src="../../resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../resource/cookie/cookie.js"></script>
+    <script type="text/javascript" src="../../resource/js/tools.js"></script>
+    <script type="text/javascript" src="../../resource/validform/Validform_v5.3.2.js"></script>
+    <script type="text/javascript" src="../../resource/js/api.js"> </script>
+    <script type="text/javascript" src="../../resource/jBox/jquery.jBox-2.3.min.js"></script>
+    <script type="text/javascript" src="../../resource/jquery/jQuery.XDomainRequest.js"></script>
+    <script src="index.js"></script>
+    <script src="./jquery.twbsPagination.js"></script>
+    <script src="./deviceList/laydate/laydate.js"></script>
+    <style>
+        html,body{
+            font-family: "Microsoft YaHei";
+            color:#333;
+        }
+        .header_ul a{
+            text-decoration: none;
+            color:#2F8BE6;
+        }
+    </style>
+</head>
+<body style="padding-top:60px;min-width:1200px;" onload="getCustomerProduct()">
+    <!-- 头部样式 -->
+    <div class="w-header">
+        <div style="position:relative;">
+            <a href="../../index.html"><img class="cloud_logo" src="../../imgs/aboutUs/logo.png" alt="智云服" title="智云服"></a>
+            <span class="cloud_logo_shu" >|</span>
+            <span class="cloud_text">开发者平台</span>
+            <ul class="header_ul">
+                <li><img src="../../imgs/cloud/onload.png" alt="常用下载"><a href="../../components/toolDownload/index.html" title="常用下载">常用下载</a></li>
+                <li><img src="../../imgs/documentico.png" alt="开发文档"><a href="../../components/documentCenter/index.html?url=0#y-documentC-platformProfile" title="开发文档">开发文档</a></li>
+                <li style="margin-right:0;"><span id="getCustomerAcc"></span><img style="margin:0 0 0 11px;" onclick="backLogin()" src="../../imgs/cloud/exit.png" title="退出" alt="退出"><span class="login" style="display:none;"><a href="../../components/login/index.html">登陆</a></span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="w-content" style="height:900px;min-width:1200px;">
+        <!-- 侧边栏 -->
+        <div class="w-east" style="">
+            <div class="wEast" style="overflow-y:scroll;">
+                <ul class="wEast_ul " style="margin-top:60px;height:100%;">
+                    <li class="wEast_ul_li  isActiveLi  wEast_ul_liHome" ><img class="imgg" src="../../imgs/cloud/home.png" alt="首页"><span>首页</span></li>
+                    <li class="wEast_ul_li wEast_ul_liProduct" ><img class="imgg" src="../../imgs/cloud/product.png"  alt="产品"><span>产品</span>
+                        <ul class="product_ul">
+
+
+                        </ul>
+
+                    </li>
+                    <li class="wEast_ul_li"><div class="addProduct"  style="margin:5px auto;" onclick="createProduct()">添加产品</div></li>
+                    <li class="wEast_ul_li wEast_ul_liApplica" class="imgg"  onclick="openMeun('','','','applicationDev/application.html')"><img src="../../imgs/cloud/yingyong.png" alt="应用开发"><span>应用开发</span></li>
+            </div>
+        </div>
+        <!-- 内容 -->
+        <div class="w-center" style="position:absolute;top:0;left:250px;top:60px;right:0;min-width:960px;min-height: 875px;">
+
+        </div>
+    </div>
+    <!-- 底部样式 -->
+    <div style="text-align: center;line-height: 60px;margin-top: 0px;cursor: pointer;color: #666;font-size: 14px;padding-left: 243px;"><span onclick="goIndex()" style="margin-right: 20px;">智云服首页</span> | <span onclick="goDocumentC()" style="margin-left: 20px;">文档中心</span></div>
+    <!-- 产品信息 -->
+    <script src='./productCon/productInfo.js'></script>
+    <!--  数据点-->
+    <script src="dataCon/dataCon.js"></script>
+    <script>
+    </script>
+    <!-- 获取产品sid隐藏域 -->
+    <input type="hidden" id="productSid" name="productSid"/>
+    <input type="hidden" id="custPid" name="custPid" value=""/>
+    <!-- 设备列表查看所传的id -->
+    <input type="hidden" id="deviceId" name="deviceId" value=""/>
+    <!-- 设备列表查看所传的id -->
+    <input type="hidden" id="sid" name="sid" value=""/>
+    <!-- 设备列表查看所传的id -->
+    <input type="hidden" id="userPhone" name="userPhone" value=""/>
+
+    <!-- 设备列表查看所传的productKey -->
+    <input type="hidden" id="product_key" name="product_key" value=""/>
+</body>
+</html>
